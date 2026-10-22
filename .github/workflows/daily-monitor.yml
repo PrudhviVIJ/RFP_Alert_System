@@ -40,10 +40,26 @@ jobs:
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
         run: |
+          if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT" ]; then
+            echo "::error title=Missing Google Sheets credential::Add the GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT secret in GitHub Actions. Its value must be the complete service-account JSON file content. If stored under an Environment, attach that Environment to this job."
+            exit 1
+          fi
           mkdir -p credentials
           printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT" \
             > credentials/google_service_account.json
-          test -s credentials/google_service_account.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          credential_path = Path("credentials/google_service_account.json")
+          try:
+              credentials = json.loads(credential_path.read_text(encoding="utf-8"))
+          except (OSError, json.JSONDecodeError) as exc:
+              raise SystemExit("GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT must contain valid service-account JSON.") from exc
+
+          if not credentials.get("client_email") or not credentials.get("private_key"):
+              raise SystemExit("The service-account JSON must include client_email and private_key.")
+          PY
 
       - name: Run Pharma RFP Monitor
         env:
