@@ -1,0 +1,83 @@
+
+name: Daily Pharma RFP Monitor
+
+on:
+  schedule:
+    # Every day at 8:00 PM India time
+    - cron: "0 20 * * *"
+      timezone: "Asia/Kolkata"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-pharma-rfp-monitor
+  cancel-in-progress: false
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Configure Google Sheets credentials
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
+        run: |
+          mkdir -p credentials
+          printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT" \
+            > credentials/google_service_account.json
+          test -s credentials/google_service_account.json
+
+      - name: Run Pharma RFP Monitor
+        env:
+          GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
+          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: credentials/google_service_account.json
+          # Add your SMTP/API environment variables here,
+          # using the exact names expected by main.py.
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        run: python main.py
+
+      - name: Save monitor state and results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f output/rfp_grant_matches.csv output/monitor_state.json
+          git add -f output/last_run_report.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "Update daily Pharma RFP Monitor results"
+            git push
+          else
+            echo "No tracked results changed."
+          fi
+
+      - name: Upload run logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pharma-rfp-monitor-logs
+          path: |
+            logs/monitor.log
+            output/last_run_report.csv
+          if-no-files-found: ignore
+          retention-days: 14
