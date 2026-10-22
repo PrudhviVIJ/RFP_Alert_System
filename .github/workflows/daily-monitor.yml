@@ -97,3 +97,20 @@ jobs:
             output/last_run_report.csv
           if-no-files-found: ignore
           retention-days: 14
+      
+      - name: Save monitor state and results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -f output/monitor_state.json
+          git add -f output/rfp_grant_matches.csv
+          git add -f output/last_run_report.csv
+
+          if ! git diff --cached --quiet; then
+            git commit -m "Update daily Pharma RFP Monitor results"
+            git push
+          else
+            echo "No tracked results changed."
+          fi
+
