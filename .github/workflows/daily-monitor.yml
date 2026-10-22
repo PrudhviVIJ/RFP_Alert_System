@@ -75,19 +75,23 @@ jobs:
           PY
 
       # 5. Ensure persistent state is available
+      
       - name: Prepare monitor state
         run: |
           mkdir -p output logs
 
-          if [ ! -f output/monitor_state.json ]; then
-            echo "::warning::monitor_state.json was not found in the repository."
-            echo "Initializing a new state file. Previous monitoring history cannot be recovered from this runner."
+          if [ ! -s output/monitor_state.json ]; then
+            echo "State file is missing or empty. Starting fresh."
             printf '{}\n' > output/monitor_state.json
-          else
-            echo "Existing monitor state found."
           fi
 
-          python -m json.tool output/monitor_state.json > /dev/null
+          if ! python -m json.tool output/monitor_state.json > /dev/null 2>&1; then
+            echo "State file is invalid JSON. Resetting it."
+            printf '{}\n' > output/monitor_state.json
+          fi
+
+          echo "Initial monitor state:"
+          cat output/monitor_state.json
 
       # 6. Run the monitor
       - name: Run Pharma RFP Monitor
@@ -105,20 +109,22 @@ jobs:
 
       # 7. Verify the state file after the run
       - name: Verify monitor outputs
-        if: always()
+        if: success()
         run: |
           echo "Output directory:"
           ls -la output || true
 
-          if [ -f output/monitor_state.json ]; then
-            python -m json.tool output/monitor_state.json > /dev/null
-            echo "Monitor state file exists and contains valid JSON."
-          else
-            echo "::error::main.py did not leave output/monitor_state.json in place."
+          if [ ! -s output/monitor_state.json ]; then
+            echo "::error::main.py did not create a non-empty monitor_state.json"
             exit 1
           fi
 
-      # 8. Persist state and reports in GitHub
+          python -m json.tool output/monitor_state.json > /dev/null
+
+          echo "Monitor state is valid JSON."
+
+
+      # 8. Persist state and reports in GitHub  
       - name: Save monitor state and results
         if: success()
         run: |
@@ -134,7 +140,7 @@ jobs:
             if [ -f "$file" ]; then
               git add -f "$file"
             else
-              echo "Optional output not found: $file"
+              echo "Not generated; skipping: $file"
             fi
           done
 
@@ -142,8 +148,9 @@ jobs:
             git commit -m "Update daily Pharma RFP Monitor results"
             git push origin HEAD
           else
-            echo "No state or report changes to commit."
+            echo "No changes to save."
           fi
+
 
       # 9. Upload logs even if the monitor fails
       - name: Upload run logs
