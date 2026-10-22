@@ -3,7 +3,6 @@ name: Daily Pharma RFP Monitor
 
 on:
   schedule:
-    # Every day at 8:00 PM India time
     - cron: "0 20 * * *"
       timezone: "Asia/Kolkata"
   workflow_dispatch:
@@ -21,72 +20,132 @@ jobs:
     timeout-minutes: 60
 
     steps:
+      # 1. Download the repository
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           persist-credentials: true
 
+      # 2. Install Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # 4. Create Google Sheets credentials securely
       - name: Configure Google Sheets credentials
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
         run: |
           if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT" ]; then
-            echo "::error title=Missing Google Sheets credential::Add the GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT secret in GitHub Actions. Its value must be the complete service-account JSON file content. If stored under an Environment, attach that Environment to this job."
+            echo "::error::Missing GitHub secret GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT"
             exit 1
           fi
+
           mkdir -p credentials
+
           printf '%s' "$GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT" \
             > credentials/google_service_account.json
+
           python - <<'PY'
           import json
           from pathlib import Path
 
-          credential_path = Path("credentials/google_service_account.json")
-          try:
-              credentials = json.loads(credential_path.read_text(encoding="utf-8"))
-          except (OSError, json.JSONDecodeError) as exc:
-              raise SystemExit("GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT must contain valid service-account JSON.") from exc
+          path = Path("credentials/google_service_account.json")
 
-          if not credentials.get("client_email") or not credentials.get("private_key"):
-              raise SystemExit("The service-account JSON must include client_email and private_key.")
+          try:
+              data = json.loads(path.read_text(encoding="utf-8"))
+          except (OSError, json.JSONDecodeError) as exc:
+              raise SystemExit(
+                  "Google service-account credentials are not valid JSON."
+              ) from exc
+
+          if not data.get("client_email") or not data.get("private_key"):
+              raise SystemExit(
+                  "Credentials must contain client_email and private_key."
+              )
+
+          print("Google Sheets credentials validated.")
           PY
 
+      # 5. Ensure persistent state is available
+      - name: Prepare monitor state
+        run: |
+          mkdir -p output logs
+
+          if [ ! -f output/monitor_state.json ]; then
+            echo "::warning::monitor_state.json was not found in the repository."
+            echo "Initializing a new state file. Previous monitoring history cannot be recovered from this runner."
+            printf '{}\n' > output/monitor_state.json
+          else
+            echo "Existing monitor state found."
+          fi
+
+          python -m json.tool output/monitor_state.json > /dev/null
+
+      # 6. Run the monitor
       - name: Run Pharma RFP Monitor
         env:
           GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
           GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET }}
           GOOGLE_SERVICE_ACCOUNT_JSON: credentials/google_service_account.json
-          # Add your SMTP/API environment variables here,
-          # using the exact names expected by main.py.
+
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-        run: python main.py
+        run: |
+          python main.py
 
+      # 7. Verify the state file after the run
+      - name: Verify monitor outputs
+        if: always()
+        run: |
+          echo "Output directory:"
+          ls -la output || true
+
+          if [ -f output/monitor_state.json ]; then
+            python -m json.tool output/monitor_state.json > /dev/null
+            echo "Monitor state file exists and contains valid JSON."
+          else
+            echo "::error::main.py did not leave output/monitor_state.json in place."
+            exit 1
+          fi
+
+      # 8. Persist state and reports in GitHub
       - name: Save monitor state and results
+        if: success()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f output/rfp_grant_matches.csv output/monitor_state.json
-          git add -f output/last_run_report.csv
+
+          git add -f output/monitor_state.json
+
+          for file in \
+            output/rfp_grant_matches.csv \
+            output/last_run_report.csv
+          do
+            if [ -f "$file" ]; then
+              git add -f "$file"
+            else
+              echo "Optional output not found: $file"
+            fi
+          done
+
           if ! git diff --cached --quiet; then
             git commit -m "Update daily Pharma RFP Monitor results"
-            git push
+            git push origin HEAD
           else
-            echo "No tracked results changed."
+            echo "No state or report changes to commit."
           fi
 
+      # 9. Upload logs even if the monitor fails
       - name: Upload run logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -97,20 +156,3 @@ jobs:
             output/last_run_report.csv
           if-no-files-found: ignore
           retention-days: 14
-      
-      - name: Save monitor state and results
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add -f output/monitor_state.json
-          git add -f output/rfp_grant_matches.csv
-          git add -f output/last_run_report.csv
-
-          if ! git diff --cached --quiet; then
-            git commit -m "Update daily Pharma RFP Monitor results"
-            git push
-          else
-            echo "No tracked results changed."
-          fi
-
