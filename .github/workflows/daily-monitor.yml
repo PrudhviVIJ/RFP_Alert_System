@@ -127,7 +127,7 @@ jobs:
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         run: |
-          python main.py
+          python diagnostic_main.py
 
       # 7. Verify the state file after the run
       - name: Verify monitor outputs
