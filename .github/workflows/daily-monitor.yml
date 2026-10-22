@@ -56,7 +56,7 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-        run: python main.py
+        run: python diagnostic_main.py
 
       - name: Save monitor state and results
         run: |
