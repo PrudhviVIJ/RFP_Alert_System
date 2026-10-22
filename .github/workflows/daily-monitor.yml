@@ -93,11 +93,33 @@ jobs:
           echo "Initial monitor state:"
           cat output/monitor_state.json
 
+      - name: Diagnose Google Sheets configuration
+        env:
+          SHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
+          SHEET_NAME: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor' }}
+          CREDENTIALS_PATH: credentials/google_service_account.json
+        run: |
+          if [ -n "$SHEET_ID" ]; then
+            echo "Spreadsheet ID: configured"
+          else
+            echo "::error::GOOGLE_SHEETS_SPREADSHEET_ID is missing"
+            exit 1
+          fi
+
+          echo "Worksheet: $SHEET_NAME"
+
+          if [ -s "$CREDENTIALS_PATH" ]; then
+            echo "Credentials file: present"
+          else
+            echo "::error::Credentials file missing"
+            exit 1
+          fi
+
       # 6. Run the monitor
       - name: Run Pharma RFP Monitor
         env:
           GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
-          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET }}
+          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor'}}
           GOOGLE_SERVICE_ACCOUNT_JSON: credentials/google_service_account.json
 
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
