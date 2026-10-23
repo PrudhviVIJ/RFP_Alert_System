@@ -33,13 +33,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      # 3. Install dependencies
+      # 3. Install Python dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      # 4. Install Playwright browser and system dependencies
+      # 4. Install Playwright Chromium
       - name: Install Playwright Chromium
         run: python -m playwright install --with-deps chromium
 
@@ -79,7 +79,7 @@ jobs:
           print("Google Sheets credentials validated.")
           PY
 
-      # 6. Validate persistent monitor state
+      # 6. Validate monitor state
       - name: Prepare monitor state
         run: |
           mkdir -p output logs
@@ -118,7 +118,7 @@ jobs:
           echo "Worksheet: $SHEET_NAME"
           echo "Credentials file is present."
 
-      # 8. Run the Pharma RFP Monitor
+      # 8. Run the monitor
       - name: Run Pharma RFP Monitor
         env:
           GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
@@ -148,71 +148,56 @@ jobs:
             exit 1
           fi
 
-          test ! -f output/rfp_grant_matches.csv || \
+          if [ -f output/rfp_grant_matches.csv ]; then
             echo "Matches report exists."
+          fi
 
-          test ! -f output/last_run_report.csv || \
+          if [ -f output/last_run_report.csv ]; then
             echo "Run report exists."
+          fi
 
       # 10. Save outputs and synchronize with latest main
       - name: Save monitor state and results
         if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          set -e
+          set -euo pipefail
 
           git config user.name "github-actions[bot]"
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # Stage only generated output files.
-          git add -f output/monitor_state.json
+          # Preserve this run's generated files outside the Git worktree.
+          SNAPSHOT="$(mktemp -d)"
+          trap 'rm -rf "$SNAPSHOT"' EXIT
 
-          for file in \
-            output/rfp_grant_matches.csv \
-            output/last_run_report.csv
-          do
-            if [ -f "$file" ]; then
-              git add -f "$file"
-            else
-              echo "Optional output not found: $file"
-            fi
-          done
-
-          # Save the exact generated output snapshot.
-          mkdir -p /tmp/rfp-monitor-output
-
-          cp output/monitor_state.json \
-            /tmp/rfp-monitor-output/monitor_state.json
+          cp output/monitor_state.json "$SNAPSHOT/monitor_state.json"
 
           if [ -f output/rfp_grant_matches.csv ]; then
-            cp output/rfp_grant_matches.csv \
-              /tmp/rfp-monitor-output/rfp_grant_matches.csv
+            cp output/rfp_grant_matches.csv "$SNAPSHOT/rfp_grant_matches.csv"
           fi
 
           if [ -f output/last_run_report.csv ]; then
-            cp output/last_run_report.csv \
-              /tmp/rfp-monitor-output/last_run_report.csv
+            cp output/last_run_report.csv "$SNAPSHOT/last_run_report.csv"
           fi
 
-          # Fetch the latest remote main before committing.
+          # Get the latest main branch before committing.
           git fetch origin main
           git reset --hard origin/main
 
-          # Restore this run's output on top of the latest main.
+          # Restore the generated output files.
           mkdir -p output
 
-          cp /tmp/rfp-monitor-output/monitor_state.json \
-            output/monitor_state.json
+          cp "$SNAPSHOT/monitor_state.json" output/monitor_state.json
 
-          for file in \
-            rfp_grant_matches.csv \
-            last_run_report.csv
-          do
-            if [ -f "/tmp/rfp-monitor-output/$file" ]; then
-              cp "/tmp/rfp-monitor-output/$file" "output/$file"
+          for file in rfp_grant_matches.csv last_run_report.csv; do
+            if [ -f "$SNAPSHOT/$file" ]; then
+              cp "$SNAPSHOT/$file" "output/$file"
             fi
           done
 
+          # Stage only generated files.
           git add -f output/monitor_state.json
 
           for file in \
@@ -231,39 +216,18 @@ jobs:
 
           git commit -m "Update daily Pharma RFP Monitor results"
 
-          # Push. Retry once if main changes concurrently.
+          # Retry once if another commit reaches main before the push.
           if ! git push origin HEAD:main; then
-            echo "Push rejected; fetching latest main and retrying."
+            echo "Push rejected. Refreshing main and retrying."
 
             git fetch origin main
-
-            # Preserve this run's output files during the retry.
-            cp output/monitor_state.json \
-              /tmp/rfp-monitor-output/monitor_state.json
-
-            if [ -f output/rfp_grant_matches.csv ]; then
-              cp output/rfp_grant_matches.csv \
-                /tmp/rfp-monitor-output/rfp_grant_matches.csv
-            fi
-
-            if [ -f output/last_run_report.csv ]; then
-              cp output/last_run_report.csv \
-                /tmp/rfp-monitor-output/last_run_report.csv
-            fi
-
             git reset --hard origin/main
 
-            mkdir -p output
+            cp "$SNAPSHOT/monitor_state.json" output/monitor_state.json
 
-            cp /tmp/rfp-monitor-output/monitor_state.json \
-              output/monitor_state.json
-
-            for file in \
-              rfp_grant_matches.csv \
-              last_run_report.csv
-            do
-              if [ -f "/tmp/rfp-monitor-output/$file" ]; then
-                cp "/tmp/rfp-monitor-output/$file" "output/$file"
+            for file in rfp_grant_matches.csv last_run_report.csv; do
+              if [ -f "$SNAPSHOT/$file" ]; then
+                cp "$SNAPSHOT/$file" "output/$file"
               fi
             done
 
@@ -285,7 +249,7 @@ jobs:
             git push origin HEAD:main
           fi
 
-      # 11. Upload logs and reports even when earlier steps fail
+      # 11. Upload logs and reports, even if an earlier step fails
       - name: Upload run logs and reports
         if: always()
         uses: actions/upload-artifact@v4
