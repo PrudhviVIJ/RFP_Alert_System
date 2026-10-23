@@ -1,0 +1,362 @@
+{
+  "abbott|https://www.abbott.com/en-us/products-solutions/cancer": {
+    "fingerprint": "baded3fd8d40de97f72a1983576bdfb9bf76b57dbd04c795677fb874eb8139c1",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.abbott.com/en-us/products-solutions/cancer",
+    "opportunity_evidence": []
+  },
+  "abbott diabetes|https://www.medicalaffairs.abbott/grants.html": {
+    "fingerprint": "33b8d7f569742cc4a64b21d7de1c13625f4b31c47b890875ef0cce7499c5c39a",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.medicalaffairs.abbott/grants.html",
+    "opportunity_evidence": []
+  },
+  "abbvie|https://www.abbvie.com/science/independent-educational-grants.html": {
+    "fingerprint": "2899e03e2c128ec626b9fd12fb033dea84e0cc36149a983ca7a4ed6b908515cd",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.abbvie.com/science/independent-educational-grants.html",
+    "opportunity_evidence": []
+  },
+  "acadia pharmaceuticals|https://acadia.com/en-us/healthcare-professionals/resources/independent-medical-education-grants": {
+    "fingerprint": "946189855c7b99b3b228b6926fa579c0975ba57122538bdcab6d44e90dbbd760",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://acadia.com/en-us/healthcare-professionals/resources/independent-medical-education-grants",
+    "opportunity_evidence": []
+  },
+  "alkermes|https://www.alkermes.com/research-and-development/medical-education-grants-activerfp": {
+    "fingerprint": "15101be022129f0c43985b3b69b964db039e89ef9b8e5f8ce6170b699a22bb65",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.alkermes.com/research-and-development/medical-education-grants-activerfp",
+    "opportunity_evidence": []
+  },
+  "alnylam|https://www.alnylam.com/about-alnylam/grants-and-giving": {
+    "fingerprint": "7453360762e335deeeb4a5fa56cff064da0d3efeed8e235206e8bb79b51208fe",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.alnylam.com/about-alnylam/grants-and-giving",
+    "opportunity_evidence": []
+  },
+  "amgen|https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding": {
+    "fingerprint": "ff291032cf5b076ea64ae99c681f8df68eacfd20a1516b6cb12af01a9c4325b8",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding",
+    "opportunity_evidence": []
+  },
+  "ardelyx|https://ardelyx.com/about-us/corporate-giving/": {
+    "fingerprint": "c7e2873ff68230947bfd2e3aeb939f2bb1ae4f511d64e7485c8bdb532848f0d2",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://ardelyx.com/about-us/corporate-giving/",
+    "opportunity_evidence": []
+  },
+  "ascendis pharma|https://ascendispharma.com/pipeline/medical-grants/": {
+    "fingerprint": "213b5e73bc46e1046d3d4021bf33de90e4ea28e5ca85a60cd86115d2f9aa7de0",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://ascendispharma.com/pipeline/medical-grants/",
+    "opportunity_evidence": []
+  },
+  "argenx|https://argenx.com/who-we-are/grants": {
+    "fingerprint": "e8163a13e87857227c1d29a2964d6e250bccc41c3d5663a14e9a40581064319d",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://argenx.com/who-we-are/grants",
+    "opportunity_evidence": []
+  },
+  "astellas|https://www.astellas.com/en/science/research-and-development/external-funding/medical-education": {
+    "fingerprint": "a80fcd7c72de3750e6d5ef3ac01ba121147a45e4f2e945cb5084ddb9dcf2e728",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.astellas.com/en/science/research-and-development/external-funding/medical-education",
+    "opportunity_evidence": []
+  },
+  "astrazeneca|https://www.astrazeneca-us.com/sustainability/request-support/medical-education-office/educational-areas-call-for-grants.html": {
+    "fingerprint": "49c5e53cddc0632df30feb71bfad3705033f8dfd24698990482c0b923bf80827",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.astrazeneca-us.com/sustainability/Request-Support/medical-education-office/educational-areas-call-for-grants.html",
+    "opportunity_evidence": []
+  },
+  "biotronik|https://www.biotronik.com/en-us/company/corporate-responsibility/grant-and-donation-requests": {
+    "fingerprint": "41dc55f0b793bb8dec82c66b21cf6efb48b6651f61c55714db1879618fdd4ca9",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.biotronik.com/en-us/company/corporate-responsibility/grant-and-donation-requests",
+    "opportunity_evidence": []
+  },
+  "bausch health|https://www.bauschhealth.com/esg/ethics/u-s-grant": {
+    "fingerprint": "2bbe0f0418ae47073de6b26cc9c4618419183943b8eae9f8e05d6e0540ac8dfb",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.bauschhealth.com/ESG/ethics/u-s-grant",
+    "opportunity_evidence": []
+  },
+  "bayer|https://www.grants-contributions.bayer.com/": {
+    "fingerprint": "5f669250df5e46019ba894bf7a382e90d28506994c2658fed050c0fe4107e2b5",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.grants-contributions.bayer.com/",
+    "opportunity_evidence": []
+  },
+  "biogen|https://biogengrantsandgiving.biogen.com/": {
+    "fingerprint": "c0a0578fb4bd55ef445c4a80f055c67f0c507cd908b83b0a7208b5ecf1333ba6",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://biogengrantsandgiving.biogen.com/",
+    "opportunity_evidence": []
+  },
+  "biomarin|https://www.biomarin.eu/our-science/funding-and-support/": {
+    "fingerprint": "dd270ada98d9a74b957218b57f2c895999056d2dd71bc4de167bd70dbba2d4d3",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://biomarin.eu/our-science/funding-and-support/",
+    "opportunity_evidence": []
+  },
+  "beone medicines|https://beonemedicines.com/responsibility/giving/independent-medical-grants/": {
+    "fingerprint": "e515de14defb26dff89862af1604dd4464d322f47aca7e85ba1970de391c1566",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://beonemedicines.com/responsibility/giving/independent-medical-grants/",
+    "opportunity_evidence": []
+  },
+  "becton dickinson (bd)|https://www.bd.com/en-menat/about-bd/global-funding": {
+    "fingerprint": "6bbd62ddf225d56b3888e1f7f476221cd3ad369dd99b414a3835803ae16a341d",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.bd.com/en-menat/about-bd/global-funding",
+    "opportunity_evidence": []
+  },
+  "boehringer ingelheim|https://pro.boehringer-ingelheim.com/us/medinfo/medical-research-funding/independent-medical-education-grants": {
+    "fingerprint": "e2b731fb6a60e44483d226ade74e49a09d483480c7c521581d00ae646ec07db3",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://pro.boehringer-ingelheim.com/us/medinfo/medical-research-funding/independent-medical-education-grants",
+    "opportunity_evidence": []
+  },
+  "boston scientific|https://www.bostonscientific.com/en-us/corporate-responsibility/giving/grants-donations-exhibits.html": {
+    "fingerprint": "7ceee5ce5e89e5663dc19d60bbfc5f237171c3b3c7dd9d0673a197056d9f0339",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.bostonscientific.com/en-US/corporate-responsibility/giving/grants-donations-exhibits.html",
+    "opportunity_evidence": []
+  },
+  "blueprint medicines|https://www.blueprintmedicines.com/pipeline/independent-medical-education/requests-for-education/": {
+    "fingerprint": "a0a7a13d9cf50a648531fbec476ef63fd583e389cdfec96a1b9ddd4f452a1e19",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.blueprintmedicines.com/pipeline/independent-medical-education/requests-for-education/",
+    "opportunity_evidence": []
+  },
+  "bms (bristol myers squibb)|https://www.bms.com/medical-resources/healthcare-providers/independent-medical-education/request-for-education.html": {
+    "fingerprint": "bdef93b198ebdabd7dcdf5488ba0b056076b5bc26cb05b482ce551d4b6de4a57",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.bms.com/medical-resources/healthcare-providers/independent-medical-education/request-for-education.html",
+    "opportunity_evidence": [
+      "RFP Code RFP Issue Date Area of Interest Type of Request RFP Title LOR Due Date If you have any questions regarding an open RFE, contact us at +1 800-831-9008 View Corporate Giving Request for Proposal (RFP)"
+    ]
+  },
+  "chiesi|https://www.chiesiusa.com/innovation/grant-program/": {
+    "fingerprint": "b4e4f81deaa8b86c72e11f8223dddcc7ee68d00e88f0ec6bfb92fcf321e65151",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.chiesiusa.com/innovation/grant-program/",
+    "opportunity_evidence": []
+  },
+  "corcept therapeutics|https://corcept.com/resources/grants/": {
+    "fingerprint": "336b838adecbbc6397718f3b3ae93355efdbc4c58fee7c57e7385453b59273ea",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://corcept.com/resources/grants/",
+    "opportunity_evidence": []
+  },
+  "csl behring|https://www.csl.com/research-and-development/awards-grants-and-initiatives/independent-medical-education-grants": {
+    "fingerprint": "d3560eba54409fb5fc71bbf11f9b18f3f492168c3de1b47f3f2ef3fe115696c2",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.csl.com/research-and-development/awards-grants-and-initiatives/independent-medical-education-grants",
+    "opportunity_evidence": []
+  },
+  "daiichi sankyo|https://daiichisankyo.us/en/independent-grants": {
+    "fingerprint": "a7bfdf47bd760c52458b60214888f12092c6fbb3ce72faced7418d6c2a79cbef",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://daiichisankyo.us/en/independent-grants",
+    "opportunity_evidence": []
+  },
+  "edwards lifesciences|https://ed-grants.edwards.com/grants_landing": {
+    "fingerprint": "7e629d75b04f62ef21c37eb22d70ecb3b27252f01c6a0ed00b088899a3f498ee",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://ed-grants.edwards.com/Grants_Landing",
+    "opportunity_evidence": []
+  },
+  "eisai|https://us.eisai.com/our-patient-focus/eisai-grants-programs": {
+    "fingerprint": "ca601fbb11d684da0c27846846693d45a98d499a29fedf3ba83cf05e231115ab",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://us.eisai.com/our-patient-focus/eisai-grants-programs",
+    "opportunity_evidence": []
+  },
+  "crinetics|https://crinetics.com/contact/funding-support/": {
+    "fingerprint": "2cea5169b19d764d53fc02566c3d02d3b309b9d826db5c64caa7b9ecd7c376bb",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://crinetics.com/contact/funding-support/",
+    "opportunity_evidence": []
+  },
+  "crinetics|https://crinetics.com/medical-education-grant-application/": {
+    "fingerprint": "61a850e1d9b89d4ca0d7c7c25db3932a0b485ece6951ee950f755c311ba57184",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://crinetics.com/medical-education-grant-application/",
+    "opportunity_evidence": []
+  },
+  "crinetics|https://crinetics.com/investigator-initiated-study-application/": {
+    "fingerprint": "090bc8b4d41176c2f5a844adae622500988f4a72e9b3f62466c7b84058c5c2e3",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://crinetics.com/investigator-initiated-study-application/",
+    "opportunity_evidence": []
+  },
+  "catalyst pharmaceuticals|https://www.catalystpharma.com/advocacy": {
+    "fingerprint": "38ba1f9267a95a0d89812355ccf9d086398d20056bf184264635dace4763fa35",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.catalystpharma.com/advocacy",
+    "opportunity_evidence": []
+  },
+  "exelixis|https://www.exelixis.com/grants-giving/": {
+    "fingerprint": "97769c2341daf3ca39a9db79c45f512c032f35165453ed44712a4930d57e1dc4",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.exelixis.com/grants-giving/",
+    "opportunity_evidence": []
+  },
+  "exelixis|https://grants.exelixis.com/meded.html": {
+    "fingerprint": "6a7759fd63add8b2318ecdcc6e27b2504a02edac47f40a5a5588a5df1825f703",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://grants.exelixis.com/meded.html",
+    "opportunity_evidence": []
+  },
+  "ge healthcare|https://www.gehealthcare.com/en-us/about/medical-education-grants": {
+    "fingerprint": "107b47afc40bc4b2a40800f351424368b452e63a7087d395c4f02ad8fdee7557",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.gehealthcare.com/en-us/about/medical-education-grants",
+    "opportunity_evidence": []
+  },
+  "geron|https://www.geron.com/about-geron/partnerships/": {
+    "fingerprint": "8654d6690535fa8e9bfbd16ce970731bbb544aee48e54a066f59665b3d8409da",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.geron.com/about-geron/partnerships/",
+    "opportunity_evidence": []
+  },
+  "genentech|https://www.gene.com/good/giving/corporate-giving/requests-for-proposals": {
+    "fingerprint": "db2a856fc18f94a60e5c8577489746f377b639db7677a5f130024e1e97dee47b",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.gene.com/good/giving/corporate-giving/requests-for-proposals",
+    "opportunity_evidence": []
+  },
+  "genmab|https://www.us.genmab.com/company/our-responsibility/grants-giving": {
+    "fingerprint": "c72835aa0a442be129004b69969694da52831b078927c29b29db0009e2d14e2b",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.us.genmab.com/company/our-responsibility/grants-giving",
+    "opportunity_evidence": []
+  },
+  "gilead sciences|https://www.gilead.com/responsibility/medical-education": {
+    "fingerprint": "475faa711ad869139812ffb38926c689c187e045d5e2323224a533805dc6f1cd",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.gilead.com/responsibility/medical-education",
+    "opportunity_evidence": []
+  },
+  "gsk|https://gskimefunding.com/": {
+    "fingerprint": "a067b7d50e16a7124452a90a94f5f2ae0b3a4f490fc8bff813bcab1710693ff9",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://gskimefunding.com/ime/index.html",
+    "opportunity_evidence": []
+  },
+  "harmony biosciences|https://www.harmonybiosciences.com/philanthropy/community-grants/": {
+    "fingerprint": "e65d77cdec1bbc07af54a9d202a83acc3edb92630c023339287671c2f609c68e",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.harmonybiosciences.com/philanthropy/community-grants/",
+    "opportunity_evidence": []
+  },
+  "hologic|https://www.hologic.com/about/philanthropy": {
+    "fingerprint": "985f8b11a8ef97c0aa3bbc195427eba1156a61c895ffd354c0b2f2bc63a44af4",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://www.hologic.com/about/philanthropy",
+    "opportunity_evidence": []
+  },
+  "horizon therapeutics|https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding": {
+    "fingerprint": "ff291032cf5b076ea64ae99c681f8df68eacfd20a1516b6cb12af01a9c4325b8",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding",
+    "opportunity_evidence": []
+  },
+  "idorsia|https://poweredbyscience.idorsia.com/us/s/requests/grants-and-sponsorships/": {
+    "fingerprint": "e22ea869d97266d618c30dca4438bc2a18b8f02a7bbfc4b59b9357c2064aa490",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": false,
+    "final_url": "https://poweredbyscience.idorsia.us/hcp-restricted/hcp/grants-and-sponsorships",
+    "opportunity_evidence": []
+  },
+  "ipsen|https://www.ipsen.com/us/grants/": {
+    "fingerprint": "d80dcd07ada8f0cf9ae1a58017aa5a886062e8d9f9d4229232fc4e670b73f05a",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.ipsen.com/us/grants/",
+    "opportunity_evidence": [
+      "Each active RFP will include specific deadlines and program guidelines, such as educational focus, target audience, format, duration, and budget.",
+      "Active Request for Proposals (RFPs) Oncology – Ipsen-RFP-Oncology-Myelofibrosis_2026-09 (DEADLINE: November 16, 2026) Rare Disease – Ipsen-RFP-Rare-2026-03 (DEADLINE: November 13, 2026) Neuroscience – none at this time What do you need to submit a grant request?"
+    ]
+  },
+  "ionis pharmaceuticals|https://ionis.com/about-us/grants-and-sponsorships": {
+    "fingerprint": "16a564d45710ca8085b1a496a23de40bf1978575c9e71b11b5c06d675f9ade59",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://ionis.com/about-us/grants-and-sponsorships",
+    "opportunity_evidence": [
+      "Grants & Sponsorships: Medical & Research | IONIS Skip to main content About Us Grants & Sponsorships Learn more about each of the different grant programs with Ionis, qualifications and requirements for each, and deadlines for submissions INDEPENDENT MEDICAL EDUCATION PROGRAM Ionis recognizes the importance of Independent Medical Education (IME) and is committed to supporting programs that seek to advance clinical care.",
+      "after completion of a 1-year fellowship) Grant may only be used as described in the granted proposal submission Institution is not limited in the amount of additional support it may provide the investigator Submissions duplicative of other research, prior submissions of Investigator sponsored studies, or projects focused on competitor products are not eligible for the Neurology Young Investigator Grant Program Applicant eligibility and qualifications Mentors may submit the application on behalf of the investigator if not yet selected; this will allow the institution to know if funding has been secured to support a fellowship position in advance Investigator must hold a doctoral degree during"
+    ]
+  },
+  "janssen / johnson & johnson|https://www.jnj.com/innovativemedicine/us/grants-and-giving/educational": {
+    "fingerprint": "3a539fbd60d628a625c4f46eb7dbb90a971ea36d2238f4cbc07df28d2c1a2054",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.jnj.com/innovativemedicine/us/grants-and-giving/educational",
+    "opportunity_evidence": [
+      "New Hematology RFP: 2026 New Oncology Nursing Fellowship RFP Due Date November 13, 2026 Funding decisions: Following an internal review process, you will be notified of the status of your application within 90 days of a completed submission and no additional information is required."
+    ]
+  },
+  "jazz pharmaceuticals|https://www.jazzpharma.com/our-purpose/medical-education": {
+    "fingerprint": "7f8535ee504ba95fb340baaa72db869b9703bd37b0a324823ea95495e2f28df5",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://www.jazzpharma.com/our-purpose/medical-education",
+    "opportunity_evidence": []
+  },
+  "kura oncology|https://kuraoncology.com/grants-funding/": {
+    "fingerprint": "213369dce9092e8bd74120a8d547617e7a2f0d8b7aa536a928cdad778e99be8e",
+    "checked_at": "2026-10-23T12:44:58+05:30",
+    "flag": true,
+    "final_url": "https://kuraoncology.com/grants-funding/",
+    "opportunity_evidence": []
+  }
+}

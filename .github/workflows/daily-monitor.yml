@@ -75,10 +75,15 @@ jobs:
           PY
 
       # 5. Ensure persistent state is available
+<<<<<<< HEAD
+=======
+      
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
       - name: Prepare monitor state
         run: |
           mkdir -p output logs
 
+<<<<<<< HEAD
           if [ ! -f output/monitor_state.json ]; then
             echo "::warning::monitor_state.json was not found in the repository."
             echo "Initializing a new state file. Previous monitoring history cannot be recovered from this runner."
@@ -88,12 +93,48 @@ jobs:
           fi
 
           python -m json.tool output/monitor_state.json > /dev/null
+=======
+          if [ ! -s output/monitor_state.json ]; then
+            echo "State file is missing or empty. Starting fresh."
+            printf '{}\n' > output/monitor_state.json
+          fi
+
+          if ! python -m json.tool output/monitor_state.json > /dev/null 2>&1; then
+            echo "State file is invalid JSON. Resetting it."
+            printf '{}\n' > output/monitor_state.json
+          fi
+
+          echo "Initial monitor state:"
+          cat output/monitor_state.json
+
+      - name: Diagnose Google Sheets configuration
+        env:
+          SHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
+          SHEET_NAME: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor' }}
+          CREDENTIALS_PATH: credentials/google_service_account.json
+        run: |
+          if [ -n "$SHEET_ID" ]; then
+            echo "Spreadsheet ID: configured"
+          else
+            echo "::error::GOOGLE_SHEETS_SPREADSHEET_ID is missing"
+            exit 1
+          fi
+
+          echo "Worksheet: $SHEET_NAME"
+
+          if [ -s "$CREDENTIALS_PATH" ]; then
+            echo "Credentials file: present"
+          else
+            echo "::error::Credentials file missing"
+            exit 1
+          fi
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
 
       # 6. Run the monitor
       - name: Run Pharma RFP Monitor
         env:
           GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
-          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET }}
+          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor'}}
           GOOGLE_SERVICE_ACCOUNT_JSON: credentials/google_service_account.json
 
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
@@ -101,15 +142,24 @@ jobs:
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
         run: |
+<<<<<<< HEAD
           python main.py
 
       # 7. Verify the state file after the run
       - name: Verify monitor outputs
         if: always()
+=======
+          python diagnostic_main.py
+
+      # 7. Verify the state file after the run
+      - name: Verify monitor outputs
+        if: success()
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
         run: |
           echo "Output directory:"
           ls -la output || true
 
+<<<<<<< HEAD
           if [ -f output/monitor_state.json ]; then
             python -m json.tool output/monitor_state.json > /dev/null
             echo "Monitor state file exists and contains valid JSON."
@@ -119,6 +169,19 @@ jobs:
           fi
 
       # 8. Persist state and reports in GitHub
+=======
+          if [ ! -s output/monitor_state.json ]; then
+            echo "::error::main.py did not create a non-empty monitor_state.json"
+            exit 1
+          fi
+
+          python -m json.tool output/monitor_state.json > /dev/null
+
+          echo "Monitor state is valid JSON."
+
+
+      # 8. Persist state and reports in GitHub  
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
       - name: Save monitor state and results
         if: success()
         run: |
@@ -134,7 +197,11 @@ jobs:
             if [ -f "$file" ]; then
               git add -f "$file"
             else
+<<<<<<< HEAD
               echo "Optional output not found: $file"
+=======
+              echo "Not generated; skipping: $file"
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
             fi
           done
 
@@ -142,9 +209,16 @@ jobs:
             git commit -m "Update daily Pharma RFP Monitor results"
             git push origin HEAD
           else
+<<<<<<< HEAD
             echo "No state or report changes to commit."
           fi
 
+=======
+            echo "No changes to save."
+          fi
+
+
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
       # 9. Upload logs even if the monitor fails
       - name: Upload run logs
         if: always()

@@ -9,7 +9,7 @@ import os
 import re
 import smtplib
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 from pathlib import Path
 from urllib.parse import urlparse
@@ -29,6 +29,7 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parent
 load_dotenv(ROOT / ".env")
+UTC = timezone.utc
 INPUT_XLSX = Path(os.getenv("INPUT_XLSX", str(ROOT / "RFP Scrape Pharma URLs.xlsx")))
 OUTPUT_DIR = ROOT / "output"
 LOG_DIR = ROOT / "logs"

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2026-10-23 11:09:16,465 | INFO | Loaded 148 company URL(s)
 2026-10-23 11:09:16,466 | WARNING | State file is invalid; starting with empty state.
 2026-10-23 11:09:16,467 | INFO | [1/148] Checking Abbott — https://www.abbott.com/en-us/products-solutions/cancer
@@ -619,3 +620,215 @@ RecursionError: maximum recursion depth exceeded
 2026-10-23 11:47:46,607 | INFO | Finished. Flagged this run: 115; positive-change alerts: 9
 2026-10-23 11:47:46,607 | INFO | Run report: D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\last_run_report.csv
 2026-10-23 11:47:46,607 | INFO | Current flagged matches: D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\rfp_grant_matches.csv
+=======
+
+>>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
+2026-10-23 11:53:19,640 | INFO | Loaded 148 company URL(s)
+2026-10-23 11:53:19,641 | WARNING | State file is invalid; starting with empty state.
+2026-10-23 11:53:19,642 | INFO | [1/148] Checking Abbott — https://www.abbott.com/en-us/products-solutions/cancer
+2026-10-23 11:53:43,824 | INFO | Loaded 50 company URL(s)
+2026-10-23 11:53:43,825 | WARNING | State file is invalid; starting with empty state.
+2026-10-23 11:53:43,825 | INFO | [1/50] Checking Abbott — https://www.abbott.com/en-us/products-solutions/cancer
+2026-10-23 11:53:45,236 | INFO | [2/50] Checking Abbott Diabetes — https://www.medicalaffairs.abbott/grants.html
+2026-10-23 11:53:45,523 | INFO | FLAG [REVIEW] Abbott Diabetes | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 11:53:46,523 | INFO | [3/50] Checking AbbVie — https://www.abbvie.com/science/independent-educational-grants.html
+2026-10-23 11:53:47,106 | INFO | FLAG [MEDIUM] AbbVie | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'neuroscience', 'neurologic', 'neurological', 'parkinson', 'migraine', 'lung cancer', 'ovarian cancer', 'leukemia', 'multiple myeloma', 'solid tumor', 'movement disorder']
+2026-10-23 11:53:48,107 | INFO | [4/50] Checking Acadia Pharmaceuticals — https://acadia.com/en-us/healthcare-professionals/resources/independent-medical-education-grants
+2026-10-23 11:53:48,700 | INFO | FLAG [MEDIUM] Acadia Pharmaceuticals | funding=['independent medical education'] | topics=['neuroscience', 'parkinson']
+2026-10-23 11:53:49,701 | INFO | [5/50] Checking Alkermes — https://www.alkermes.com/research-and-development/medical-education-grants-activerfp
+2026-10-23 11:53:50,913 | INFO | FLAG [HIGH] Alkermes | funding=['request for proposal', 'rfp', 'IME'] | topics=['neurologic', 'neurological']
+2026-10-23 11:53:51,914 | INFO | [6/50] Checking Alnylam — https://www.alnylam.com/about-alnylam/grants-and-giving
+2026-10-23 11:53:52,669 | INFO | FLAG [MEDIUM] Alnylam | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'apply for funding', 'IME', 'external funding'] | topics=['neurology']
+2026-10-23 11:53:53,669 | INFO | [7/50] Checking Amgen — https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding
+2026-10-23 11:53:54,340 | INFO | FLAG [HIGH] Amgen | funding=['rfp', 'independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'multiple sclerosis', 'lung cancer', 'leukemia', 'multiple myeloma', 'solid tumor', 'neuroimmunology']
+2026-10-23 11:53:55,341 | INFO | [8/50] Checking Ardelyx — https://ardelyx.com/about-us/corporate-giving/
+2026-10-23 11:53:55,958 | INFO | FLAG [REVIEW] Ardelyx | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 11:53:56,959 | INFO | [9/50] Checking Ascendis Pharma — https://ascendispharma.com/pipeline/medical-grants/
+2026-10-23 11:53:57,525 | INFO | FLAG [REVIEW] Ascendis Pharma | funding=['independent medical education'] | topics=[]
+2026-10-23 11:53:58,526 | INFO | [10/50] Checking argenx — https://argenx.com/who-we-are/grants
+2026-10-23 11:54:00,029 | INFO | FLAG [MEDIUM] argenx | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'IME'] | topics=['neurology', 'neuromuscular', 'neuropathy']
+2026-10-23 11:54:01,030 | INFO | [11/50] Checking Astellas — https://www.astellas.com/en/science/research-and-development/external-funding/medical-education
+2026-10-23 11:54:01,445 | INFO | FLAG [MEDIUM] Astellas | funding=['independent medical education', 'call for grant applications', 'CGA', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'prostate cancer', 'leukaemia']
+2026-10-23 11:54:02,446 | INFO | [12/50] Checking AstraZeneca — https://www.astrazeneca-us.com/sustainability/Request-Support/medical-education-office/educational-areas-call-for-grants.html
+2026-10-23 11:54:14,903 | INFO | FLAG [MEDIUM] AstraZeneca | funding=['CGA', 'IME'] | topics=['oncology', 'cancer', 'hematology', 'neurology', 'immuno-oncology', 'breast cancer', 'lung cancer', 'colorectal cancer', 'prostate cancer', 'pancreatic cancer', 'ovarian cancer', 'lymphoma', 'leukemia', 'multiple myeloma', 'neuropathy']
+2026-10-23 11:54:15,904 | INFO | [13/50] Checking BIOTRONIK — https://www.biotronik.com/en-us/company/corporate-responsibility/grant-and-donation-requests
+2026-10-23 11:54:17,127 | INFO | [14/50] Checking Bausch Health — https://www.bauschhealth.com/ESG/ethics/u-s-grant
+2026-10-23 11:54:17,777 | INFO | FLAG [MEDIUM] Bausch Health | funding=['independent medical education'] | topics=['neuroscience']
+2026-10-23 11:54:18,778 | INFO | [15/50] Checking Bayer — https://www.grants-contributions.bayer.com/
+2026-10-23 11:54:32,934 | INFO | [16/50] Checking Biogen — https://biogengrantsandgiving.biogen.com/
+2026-10-23 11:54:33,715 | INFO | FLAG [MEDIUM] Biogen | funding=['IME'] | topics=['neurology']
+2026-10-23 11:54:34,715 | INFO | [17/50] Checking BioMarin — https://www.biomarin.eu/our-science/funding-and-support/
+2026-10-23 11:54:36,299 | INFO | FLAG [REVIEW] BioMarin | funding=['independent medical education', 'apply for funding'] | topics=[]
+2026-10-23 11:54:37,300 | INFO | [18/50] Checking BeOne Medicines — https://beonemedicines.com/responsibility/giving/independent-medical-grants/
+2026-10-23 11:54:37,718 | INFO | FLAG [MEDIUM] BeOne Medicines | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'hematology', 'lymphoma', 'leukemia', 'solid tumor']
+2026-10-23 11:54:38,719 | INFO | [19/50] Checking Becton Dickinson (BD) — https://www.bd.com/en-menat/about-bd/global-funding
+2026-10-23 11:54:50,739 | INFO | [20/50] Checking Boehringer Ingelheim — https://pro.boehringer-ingelheim.com/us/medinfo/medical-research-funding/independent-medical-education-grants
+2026-10-23 11:54:50,896 | INFO | FLAG [MEDIUM] Boehringer Ingelheim | funding=['rfp', 'IME'] | topics=['oncology', 'neurology']
+2026-10-23 11:54:51,897 | INFO | [21/50] Checking Boston Scientific — https://www.bostonscientific.com/en-US/corporate-responsibility/giving/grants-donations-exhibits.html
+2026-10-23 11:54:52,118 | INFO | FLAG [HIGH] Boston Scientific | funding=['independent medical education', 'IME'] | topics=['oncology']
+2026-10-23 11:54:53,119 | INFO | [22/50] Checking Blueprint Medicines — https://www.blueprintmedicines.com/pipeline/independent-medical-education/requests-for-education/
+2026-10-23 11:55:04,963 | INFO | FLAG [REVIEW] Blueprint Medicines | funding=['request for proposal', 'independent medical education'] | topics=[]
+2026-10-23 11:55:05,964 | INFO | [23/50] Checking BMS (Bristol Myers Squibb) — https://www.bms.com/medical-resources/healthcare-providers/independent-medical-education/request-for-education.html
+2026-10-23 11:55:06,708 | INFO | FLAG [REVIEW] BMS (Bristol Myers Squibb) | funding=['request for proposal', 'rfp', 'IME'] | topics=[]
+2026-10-23 11:55:07,709 | INFO | [24/50] Checking Chiesi — https://www.chiesiusa.com/innovation/grant-program/
+2026-10-23 11:55:08,470 | INFO | FLAG [REVIEW] Chiesi | funding=['independent medical education'] | topics=[]
+2026-10-23 11:55:09,471 | INFO | [25/50] Checking Corcept Therapeutics — https://corcept.com/resources/grants/
+2026-10-23 11:55:11,303 | INFO | [26/50] Checking CSL Behring — https://www.csl.com/research-and-development/awards-grants-and-initiatives/independent-medical-education-grants
+2026-10-23 11:55:24,992 | INFO | [27/50] Checking Daiichi Sankyo — https://daiichisankyo.us/en/independent-grants
+2026-10-23 11:55:26,532 | INFO | FLAG [MEDIUM] Daiichi Sankyo | funding=['requests for proposals', 'rfp', 'independent medical education', 'CGA', 'IME'] | topics=['oncology']
+2026-10-23 11:55:27,533 | INFO | [28/50] Checking Edwards Lifesciences — https://ed-grants.edwards.com/Grants_Landing
+2026-10-23 11:55:27,693 | WARNING | Retrying (Retry(total=1, connect=2, read=2, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1082)'))': /Grants_Landing
+2026-10-23 11:55:29,179 | WARNING | Retrying (Retry(total=0, connect=2, read=2, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1082)'))': /Grants_Landing
+2026-10-23 11:55:42,533 | INFO | [29/50] Checking Eisai — https://us.eisai.com/our-patient-focus/eisai-grants-programs
+2026-10-23 11:55:44,732 | INFO | [30/50] Checking Crinetics — https://crinetics.com/contact/funding-support/
+2026-10-23 11:55:44,866 | INFO | FLAG [REVIEW] Crinetics | funding=['request for proposal', 'rfp', 'IME'] | topics=[]
+2026-10-23 11:55:45,868 | INFO | [31/50] Checking Crinetics — https://crinetics.com/medical-education-grant-application/
+2026-10-23 11:55:45,943 | INFO | FLAG [REVIEW] Crinetics | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 11:55:46,944 | INFO | [32/50] Checking Crinetics — https://crinetics.com/investigator-initiated-study-application/
+2026-10-23 11:55:47,015 | INFO | FLAG [REVIEW] Crinetics | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 11:55:48,016 | INFO | [33/50] Checking Catalyst Pharmaceuticals — https://www.catalystpharma.com/advocacy
+2026-10-23 11:55:51,233 | INFO | [34/50] Checking Exelixis — https://www.exelixis.com/grants-giving/
+2026-10-23 11:55:51,881 | INFO | FLAG [MEDIUM] Exelixis | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor']
+2026-10-23 11:55:52,883 | INFO | [35/50] Checking Exelixis — https://grants.exelixis.com/meded.html
+2026-10-23 11:56:07,578 | INFO | [36/50] Checking GE HealthCare — https://www.gehealthcare.com/en-us/about/medical-education-grants
+2026-10-23 11:56:07,944 | INFO | FLAG [REVIEW] GE HealthCare | funding=['IME'] | topics=[]
+2026-10-23 11:56:08,945 | INFO | [37/50] Checking Geron — https://www.geron.com/about-geron/partnerships/
+2026-10-23 11:56:09,559 | INFO | FLAG [MEDIUM] Geron | funding=['independent medical education', 'IME'] | topics=['cancer', 'hematology']
+2026-10-23 11:56:10,560 | INFO | [38/50] Checking Genentech — https://www.gene.com/good/giving/corporate-giving/requests-for-proposals
+2026-10-23 11:56:12,472 | INFO | FLAG [MEDIUM] Genentech | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'apply for funding', 'IME'] | topics=['alzheimer', "alzheimer's disease"]
+2026-10-23 11:56:13,473 | INFO | [39/50] Checking Genmab — https://www.us.genmab.com/company/our-responsibility/grants-giving
+2026-10-23 11:56:27,380 | INFO | FLAG [MEDIUM] Genmab | funding=['independent medical education'] | topics=['oncology', 'cancer']
+2026-10-23 11:56:28,380 | INFO | [40/50] Checking Gilead Sciences — https://www.gilead.com/responsibility/medical-education
+2026-10-23 11:56:29,432 | INFO | FLAG [MEDIUM] Gilead Sciences | funding=['independent medical education', 'apply for funding', 'IME'] | topics=['tumor']
+2026-10-23 11:56:30,432 | INFO | [41/50] Checking GSK — https://gskimefunding.com/
+2026-10-23 11:56:33,372 | INFO | FLAG [MEDIUM] GSK | funding=['request for proposal', 'rfp', 'independent medical education', 'call for grant applications', 'CGA', 'IME'] | topics=['oncology', 'multiple myeloma']
+2026-10-23 11:56:34,374 | INFO | [42/50] Checking Harmony Biosciences — https://www.harmonybiosciences.com/philanthropy/community-grants/
+2026-10-23 11:56:34,922 | INFO | FLAG [MEDIUM] Harmony Biosciences | funding=['apply for funding', 'IME', 'external funding'] | topics=['neurologic', 'neurological']
+2026-10-23 11:56:35,924 | INFO | [43/50] Checking Hologic — https://www.hologic.com/about/philanthropy
+2026-10-23 11:56:37,980 | INFO | [44/50] Checking Horizon Therapeutics — https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding
+2026-10-23 11:56:38,745 | INFO | FLAG [HIGH] Horizon Therapeutics | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'multiple sclerosis', 'lung cancer', 'leukemia', 'multiple myeloma', 'solid tumor', 'neuroimmunology']
+2026-10-23 11:56:39,746 | INFO | [45/50] Checking Idorsia — https://poweredbyscience.idorsia.com/us/s/requests/grants-and-sponsorships/
+2026-10-23 11:56:54,827 | INFO | [46/50] Checking Ipsen — https://www.ipsen.com/us/grants/
+2026-10-23 11:56:55,129 | INFO | FLAG [HIGH] Ipsen | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'IME'] | topics=['oncology', 'cancer', 'neuroscience', 'migraine', 'pancreatic cancer', 'movement disorder']
+2026-10-23 11:56:56,130 | INFO | [47/50] Checking Ionis Pharmaceuticals — https://ionis.com/about-us/grants-and-sponsorships
+2026-10-23 11:56:57,200 | INFO | FLAG [HIGH] Ionis Pharmaceuticals | funding=['independent medical education', 'IME'] | topics=['neurology', 'neuropathy']
+2026-10-23 11:56:58,201 | INFO | [48/50] Checking Janssen / Johnson & Johnson — https://www.jnj.com/innovativemedicine/us/grants-and-giving/educational
+2026-10-23 11:57:10,373 | INFO | FLAG [MEDIUM] Janssen / Johnson & Johnson | funding=['rfp', 'independent medical education'] | topics=['oncology', 'hematology', 'neuroscience', 'multiple myeloma']
+2026-10-23 11:57:11,374 | INFO | [49/50] Checking Jazz Pharmaceuticals — https://www.jazzpharma.com/our-purpose/medical-education
+2026-10-23 11:57:12,587 | INFO | FLAG [HIGH] Jazz Pharmaceuticals | funding=['IME'] | topics=['oncology', 'cancer', 'hematology', 'neuroscience', 'epilepsy', 'lung cancer', 'leukemia', 'seizure']
+2026-10-23 11:57:13,588 | INFO | [50/50] Checking Kura Oncology — https://kuraoncology.com/grants-funding/
+2026-10-23 11:57:14,171 | INFO | FLAG [MEDIUM] Kura Oncology | funding=['independent medical education'] | topics=['oncology', 'leukemia']
+2026-10-23 11:57:17,069 | INFO | Google Sheets target: spreadsheet='Pharma RFP Monitor' | URL=https://docs.google.com/spreadsheets/d/1EynpzOg-TCeG_fcWU-hXG2nQdW0p-GWgodRvEZaVlzc | configured worksheet='Pharma RFP Monitor' | CSV=D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\rfp_grant_matches.csv
+2026-10-23 11:57:19,156 | INFO | Google Sheets write verification: tab_url=https://docs.google.com/spreadsheets/d/1EynpzOg-TCeG_fcWU-hXG2nQdW0p-GWgodRvEZaVlzc#gid=72104127 | expected_rows_including_header=119 | readback_rows=119 | expected_columns=26
+2026-10-23 11:57:19,157 | INFO | Google Sheet updated and verified: spreadsheet='Pharma RFP Monitor' | worksheet='Pharma RFP Monitor' | 118 data row(s).
+2026-10-23 11:57:23,912 | INFO | Email alert sent to 2 recipient(s)
+2026-10-23 11:57:23,914 | ERROR | Google Sheets email-alert history update failed.
+Traceback (most recent call last):
+  File "D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\diagnostic_main.py", line 531, in main
+    sync_email_alerts_to_google_sheet(alerts if email_sent else [])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\main.py", line 430, in sync_email_alerts_to_google_sheet
+    sent_at = datetime.now(UTC).isoformat(timespec="seconds")
+                           ^^^
+NameError: name 'UTC' is not defined
+2026-10-23 11:57:23,919 | INFO | Finished. Flagged this run: 38; positive-change alerts: 4
+2026-10-23 11:57:23,920 | INFO | Run report: D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\last_run_report.csv
+2026-10-23 11:57:23,920 | INFO | Current flagged matches: D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\rfp_grant_matches.csv
+2026-10-23 12:44:58,284 | INFO | Loaded 50 company URL(s)
+2026-10-23 12:44:58,287 | INFO | [1/50] Checking Abbott — https://www.abbott.com/en-us/products-solutions/cancer
+2026-10-23 12:45:33,135 | INFO | [2/50] Checking Abbott Diabetes — https://www.medicalaffairs.abbott/grants.html
+2026-10-23 12:45:50,489 | INFO | FLAG [REVIEW] Abbott Diabetes | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 12:45:51,489 | INFO | [3/50] Checking AbbVie — https://www.abbvie.com/science/independent-educational-grants.html
+2026-10-23 12:46:00,065 | INFO | FLAG [MEDIUM] AbbVie | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'neuroscience', 'neurologic', 'neurological', 'parkinson', 'migraine', 'lung cancer', 'ovarian cancer', 'leukemia', 'multiple myeloma', 'solid tumor', 'movement disorder']
+2026-10-23 12:46:01,067 | INFO | [4/50] Checking Acadia Pharmaceuticals — https://acadia.com/en-us/healthcare-professionals/resources/independent-medical-education-grants
+2026-10-23 12:46:03,193 | INFO | FLAG [MEDIUM] Acadia Pharmaceuticals | funding=['independent medical education'] | topics=['neuroscience', 'parkinson']
+2026-10-23 12:46:04,194 | INFO | [5/50] Checking Alkermes — https://www.alkermes.com/research-and-development/medical-education-grants-activerfp
+2026-10-23 12:46:05,423 | INFO | FLAG [HIGH] Alkermes | funding=['request for proposal', 'rfp', 'IME'] | topics=['neurologic', 'neurological']
+2026-10-23 12:46:06,424 | INFO | [6/50] Checking Alnylam — https://www.alnylam.com/about-alnylam/grants-and-giving
+2026-10-23 12:46:07,224 | INFO | FLAG [MEDIUM] Alnylam | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'apply for funding', 'IME', 'external funding'] | topics=['neurology']
+2026-10-23 12:46:08,225 | INFO | [7/50] Checking Amgen — https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding
+2026-10-23 12:46:11,550 | INFO | FLAG [HIGH] Amgen | funding=['rfp', 'independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'multiple sclerosis', 'lung cancer', 'leukemia', 'multiple myeloma', 'solid tumor', 'neuroimmunology']
+2026-10-23 12:46:12,551 | INFO | [8/50] Checking Ardelyx — https://ardelyx.com/about-us/corporate-giving/
+2026-10-23 12:46:13,623 | INFO | FLAG [REVIEW] Ardelyx | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 12:46:14,624 | INFO | [9/50] Checking Ascendis Pharma — https://ascendispharma.com/pipeline/medical-grants/
+2026-10-23 12:46:17,593 | INFO | FLAG [REVIEW] Ascendis Pharma | funding=['independent medical education'] | topics=[]
+2026-10-23 12:46:18,594 | INFO | [10/50] Checking argenx — https://argenx.com/who-we-are/grants
+2026-10-23 12:46:20,520 | INFO | FLAG [MEDIUM] argenx | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'IME'] | topics=['neurology', 'neuromuscular', 'neuropathy']
+2026-10-23 12:46:21,520 | INFO | [11/50] Checking Astellas — https://www.astellas.com/en/science/research-and-development/external-funding/medical-education
+2026-10-23 12:46:22,948 | INFO | FLAG [MEDIUM] Astellas | funding=['independent medical education', 'call for grant applications', 'CGA', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'prostate cancer', 'leukaemia']
+2026-10-23 12:46:23,948 | INFO | [12/50] Checking AstraZeneca — https://www.astrazeneca-us.com/sustainability/Request-Support/medical-education-office/educational-areas-call-for-grants.html
+2026-10-23 12:46:45,342 | INFO | FLAG [MEDIUM] AstraZeneca | funding=['CGA', 'IME'] | topics=['oncology', 'cancer', 'hematology', 'neurology', 'immuno-oncology', 'breast cancer', 'lung cancer', 'colorectal cancer', 'prostate cancer', 'pancreatic cancer', 'ovarian cancer', 'lymphoma', 'leukemia', 'multiple myeloma', 'neuropathy']
+2026-10-23 12:46:46,343 | INFO | [13/50] Checking BIOTRONIK — https://www.biotronik.com/en-us/company/corporate-responsibility/grant-and-donation-requests
+2026-10-23 12:46:47,722 | INFO | [14/50] Checking Bausch Health — https://www.bauschhealth.com/ESG/ethics/u-s-grant
+2026-10-23 12:46:48,223 | INFO | FLAG [MEDIUM] Bausch Health | funding=['independent medical education'] | topics=['neuroscience']
+2026-10-23 12:46:49,225 | INFO | [15/50] Checking Bayer — https://www.grants-contributions.bayer.com/
+2026-10-23 12:47:05,623 | INFO | [16/50] Checking Biogen — https://biogengrantsandgiving.biogen.com/
+2026-10-23 12:47:06,579 | INFO | FLAG [MEDIUM] Biogen | funding=['IME'] | topics=['neurology']
+2026-10-23 12:47:07,580 | INFO | [17/50] Checking BioMarin — https://www.biomarin.eu/our-science/funding-and-support/
+2026-10-23 12:47:09,965 | INFO | FLAG [REVIEW] BioMarin | funding=['independent medical education', 'apply for funding'] | topics=[]
+2026-10-23 12:47:10,966 | INFO | [18/50] Checking BeOne Medicines — https://beonemedicines.com/responsibility/giving/independent-medical-grants/
+2026-10-23 12:47:49,708 | INFO | FLAG [MEDIUM] BeOne Medicines | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'hematology', 'lymphoma', 'leukemia', 'solid tumor']
+2026-10-23 12:47:50,709 | INFO | [19/50] Checking Becton Dickinson (BD) — https://www.bd.com/en-menat/about-bd/global-funding
+2026-10-23 12:48:08,692 | INFO | [20/50] Checking Boehringer Ingelheim — https://pro.boehringer-ingelheim.com/us/medinfo/medical-research-funding/independent-medical-education-grants
+2026-10-23 12:48:09,049 | INFO | FLAG [MEDIUM] Boehringer Ingelheim | funding=['rfp', 'IME'] | topics=['oncology', 'neurology']
+2026-10-23 12:48:10,050 | INFO | [21/50] Checking Boston Scientific — https://www.bostonscientific.com/en-US/corporate-responsibility/giving/grants-donations-exhibits.html
+2026-10-23 12:48:11,228 | INFO | FLAG [HIGH] Boston Scientific | funding=['independent medical education', 'IME'] | topics=['oncology']
+2026-10-23 12:48:12,229 | INFO | [22/50] Checking Blueprint Medicines — https://www.blueprintmedicines.com/pipeline/independent-medical-education/requests-for-education/
+2026-10-23 12:48:39,811 | INFO | FLAG [REVIEW] Blueprint Medicines | funding=['request for proposal', 'independent medical education'] | topics=[]
+2026-10-23 12:48:40,812 | INFO | [23/50] Checking BMS (Bristol Myers Squibb) — https://www.bms.com/medical-resources/healthcare-providers/independent-medical-education/request-for-education.html
+2026-10-23 12:48:42,375 | INFO | FLAG [REVIEW] BMS (Bristol Myers Squibb) | funding=['request for proposal', 'rfp', 'IME'] | topics=[]
+2026-10-23 12:48:43,376 | INFO | [24/50] Checking Chiesi — https://www.chiesiusa.com/innovation/grant-program/
+2026-10-23 12:48:59,646 | INFO | FLAG [REVIEW] Chiesi | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 12:49:00,647 | INFO | [25/50] Checking Corcept Therapeutics — https://corcept.com/resources/grants/
+2026-10-23 12:49:02,533 | INFO | [26/50] Checking CSL Behring — https://www.csl.com/research-and-development/awards-grants-and-initiatives/independent-medical-education-grants
+2026-10-23 12:49:19,344 | INFO | [27/50] Checking Daiichi Sankyo — https://daiichisankyo.us/en/independent-grants
+2026-10-23 12:49:20,940 | INFO | FLAG [MEDIUM] Daiichi Sankyo | funding=['requests for proposals', 'rfp', 'independent medical education', 'CGA', 'IME'] | topics=['oncology']
+2026-10-23 12:49:21,941 | INFO | [28/50] Checking Edwards Lifesciences — https://ed-grants.edwards.com/Grants_Landing
+2026-10-23 12:49:22,736 | WARNING | Retrying (Retry(total=1, connect=2, read=2, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1082)'))': /Grants_Landing
+2026-10-23 12:49:24,270 | WARNING | Retrying (Retry(total=0, connect=2, read=2, redirect=None, status=None)) after connection broken by 'SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1082)'))': /Grants_Landing
+2026-10-23 12:49:40,823 | INFO | [29/50] Checking Eisai — https://us.eisai.com/our-patient-focus/eisai-grants-programs
+2026-10-23 12:49:44,068 | INFO | [30/50] Checking Crinetics — https://crinetics.com/contact/funding-support/
+2026-10-23 12:49:44,435 | INFO | FLAG [REVIEW] Crinetics | funding=['request for proposal', 'rfp', 'IME'] | topics=[]
+2026-10-23 12:49:45,445 | INFO | [31/50] Checking Crinetics — https://crinetics.com/medical-education-grant-application/
+2026-10-23 12:49:45,531 | INFO | FLAG [REVIEW] Crinetics | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 12:49:46,532 | INFO | [32/50] Checking Crinetics — https://crinetics.com/investigator-initiated-study-application/
+2026-10-23 12:49:46,637 | INFO | FLAG [REVIEW] Crinetics | funding=['independent medical education', 'IME'] | topics=[]
+2026-10-23 12:49:47,644 | INFO | [33/50] Checking Catalyst Pharmaceuticals — https://www.catalystpharma.com/advocacy
+2026-10-23 12:49:50,396 | INFO | [34/50] Checking Exelixis — https://www.exelixis.com/grants-giving/
+2026-10-23 12:49:53,157 | INFO | FLAG [MEDIUM] Exelixis | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor']
+2026-10-23 12:49:54,159 | INFO | [35/50] Checking Exelixis — https://grants.exelixis.com/meded.html
+2026-10-23 12:50:12,114 | INFO | [36/50] Checking GE HealthCare — https://www.gehealthcare.com/en-us/about/medical-education-grants
+2026-10-23 12:50:15,985 | INFO | FLAG [REVIEW] GE HealthCare | funding=['IME'] | topics=[]
+2026-10-23 12:50:16,986 | INFO | [37/50] Checking Geron — https://www.geron.com/about-geron/partnerships/
+2026-10-23 12:50:17,534 | INFO | FLAG [MEDIUM] Geron | funding=['independent medical education', 'IME'] | topics=['cancer', 'hematology']
+2026-10-23 12:50:18,535 | INFO | [38/50] Checking Genentech — https://www.gene.com/good/giving/corporate-giving/requests-for-proposals
+2026-10-23 12:50:19,204 | INFO | FLAG [MEDIUM] Genentech | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'apply for funding', 'IME'] | topics=['alzheimer', "alzheimer's disease"]
+2026-10-23 12:50:20,205 | INFO | [39/50] Checking Genmab — https://www.us.genmab.com/company/our-responsibility/grants-giving
+2026-10-23 12:50:37,352 | INFO | FLAG [MEDIUM] Genmab | funding=['independent medical education'] | topics=['oncology', 'cancer']
+2026-10-23 12:50:38,353 | INFO | [40/50] Checking Gilead Sciences — https://www.gilead.com/responsibility/medical-education
+2026-10-23 12:50:41,843 | INFO | FLAG [MEDIUM] Gilead Sciences | funding=['independent medical education', 'apply for funding', 'IME'] | topics=['tumor']
+2026-10-23 12:50:42,844 | INFO | [41/50] Checking GSK — https://gskimefunding.com/
+2026-10-23 12:50:44,936 | INFO | FLAG [MEDIUM] GSK | funding=['request for proposal', 'rfp', 'independent medical education', 'call for grant applications', 'CGA', 'IME'] | topics=['oncology', 'multiple myeloma']
+2026-10-23 12:50:45,937 | INFO | [42/50] Checking Harmony Biosciences — https://www.harmonybiosciences.com/philanthropy/community-grants/
+2026-10-23 12:50:47,000 | INFO | FLAG [MEDIUM] Harmony Biosciences | funding=['apply for funding', 'IME', 'external funding'] | topics=['neurologic', 'neurological']
+2026-10-23 12:50:48,002 | INFO | [43/50] Checking Hologic — https://www.hologic.com/about/philanthropy
+2026-10-23 12:50:50,090 | INFO | [44/50] Checking Horizon Therapeutics — https://www.amgen.com/responsibility/healthy-people/community-investment/independent-medical-education-funding
+2026-10-23 12:50:54,558 | INFO | FLAG [HIGH] Horizon Therapeutics | funding=['independent medical education', 'IME'] | topics=['oncology', 'cancer', 'tumor', 'multiple sclerosis', 'lung cancer', 'leukemia', 'multiple myeloma', 'solid tumor', 'neuroimmunology']
+2026-10-23 12:50:55,559 | INFO | [45/50] Checking Idorsia — https://poweredbyscience.idorsia.com/us/s/requests/grants-and-sponsorships/
+2026-10-23 12:51:13,007 | INFO | [46/50] Checking Ipsen — https://www.ipsen.com/us/grants/
+2026-10-23 12:51:13,316 | INFO | FLAG [HIGH] Ipsen | funding=['request for proposal', 'requests for proposals', 'rfp', 'independent medical education', 'IME'] | topics=['oncology', 'cancer', 'neuroscience', 'migraine', 'pancreatic cancer', 'movement disorder']
+2026-10-23 12:51:14,316 | INFO | [47/50] Checking Ionis Pharmaceuticals — https://ionis.com/about-us/grants-and-sponsorships
+2026-10-23 12:51:15,868 | INFO | FLAG [HIGH] Ionis Pharmaceuticals | funding=['independent medical education', 'IME'] | topics=['neurology', 'neuropathy']
+2026-10-23 12:51:16,869 | INFO | [48/50] Checking Janssen / Johnson & Johnson — https://www.jnj.com/innovativemedicine/us/grants-and-giving/educational
+2026-10-23 12:51:38,850 | INFO | FLAG [MEDIUM] Janssen / Johnson & Johnson | funding=['rfp', 'independent medical education'] | topics=['oncology', 'hematology', 'neuroscience', 'multiple myeloma']
+2026-10-23 12:51:39,851 | INFO | [49/50] Checking Jazz Pharmaceuticals — https://www.jazzpharma.com/our-purpose/medical-education
+2026-10-23 12:51:42,582 | INFO | FLAG [HIGH] Jazz Pharmaceuticals | funding=['IME'] | topics=['oncology', 'cancer', 'hematology', 'neuroscience', 'epilepsy', 'lung cancer', 'leukemia', 'seizure']
+2026-10-23 12:51:43,583 | INFO | [50/50] Checking Kura Oncology — https://kuraoncology.com/grants-funding/
+2026-10-23 12:51:44,175 | INFO | FLAG [MEDIUM] Kura Oncology | funding=['independent medical education'] | topics=['oncology', 'leukemia']
+2026-10-23 12:51:47,144 | INFO | Google Sheets target: spreadsheet='Pharma RFP Monitor' | URL=https://docs.google.com/spreadsheets/d/1EynpzOg-TCeG_fcWU-hXG2nQdW0p-GWgodRvEZaVlzc | configured worksheet='Pharma RFP Monitor' | CSV=D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\rfp_grant_matches.csv
+2026-10-23 12:51:49,372 | INFO | Google Sheets write verification: tab_url=https://docs.google.com/spreadsheets/d/1EynpzOg-TCeG_fcWU-hXG2nQdW0p-GWgodRvEZaVlzc#gid=72104127 | expected_rows_including_header=119 | readback_rows=119 | expected_columns=26
+2026-10-23 12:51:49,373 | INFO | Google Sheet updated and verified: spreadsheet='Pharma RFP Monitor' | worksheet='Pharma RFP Monitor' | 118 data row(s).
+2026-10-23 12:51:56,747 | INFO | Google Sheets email tabs updated: current='Email Alerts' (0 alert(s)); history='Email Alerts History' (51 retained, 0 expired); window=30 days.
+2026-10-23 12:51:56,754 | INFO | Finished. Flagged this run: 38; positive-change alerts: 0
+2026-10-23 12:51:56,756 | INFO | Run report: D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\last_run_report.csv
+2026-10-23 12:51:56,757 | INFO | Current flagged matches: D:\Prudhvi\RFP Scrape\pharma_rfp_monitor_windows\pharma_rfp_monitor\output\rfp_grant_matches.csv
