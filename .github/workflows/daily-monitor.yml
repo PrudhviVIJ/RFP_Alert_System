@@ -20,34 +20,36 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      # 1. Download the repository
+      # 1. Check out the repository
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
 
-      # 2. Install Python
+      # 2. Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      
-      - name: Install Playwright Chromium
-        run: python -m playwright install --with-deps chromium          
 
-      # 3. Install dependencies
+      # 3. Install Python dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements.txt
 
-      # 4. Create Google Sheets credentials securely
+      # 4. Install the browser required by Playwright
+      - name: Install Playwright Chromium
+        run: python -m playwright install --with-deps chromium
+
+      # 5. Configure Google Sheets credentials
       - name: Configure Google Sheets credentials
         env:
           GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
         run: |
           if [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT" ]; then
-            echo "::error::Missing GitHub secret GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT"
+            echo "::error::Missing GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT secret"
             exit 1
           fi
 
@@ -77,119 +79,95 @@ jobs:
           print("Google Sheets credentials validated.")
           PY
 
-      # 5. Ensure persistent state is available
-<<<<<<< HEAD
-=======
-      
->>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
+      # 6. Validate persistent monitor state
       - name: Prepare monitor state
         run: |
           mkdir -p output logs
 
-<<<<<<< HEAD
           if [ ! -f output/monitor_state.json ]; then
-            echo "::warning::monitor_state.json was not found in the repository."
-            echo "Initializing a new state file. Previous monitoring history cannot be recovered from this runner."
+            echo "::warning::Monitor state file not found. Initializing new state."
             printf '{}\n' > output/monitor_state.json
-          else
-            echo "Existing monitor state found."
           fi
 
-          python -m json.tool output/monitor_state.json > /dev/null
-=======
           if [ ! -s output/monitor_state.json ]; then
-            echo "State file is missing or empty. Starting fresh."
-            printf '{}\n' > output/monitor_state.json
+            echo "::error::Monitor state file is empty."
+            exit 1
           fi
 
-          if ! python -m json.tool output/monitor_state.json > /dev/null 2>&1; then
-            echo "State file is invalid JSON. Resetting it."
-            printf '{}\n' > output/monitor_state.json
+          if ! python -m json.tool output/monitor_state.json > /dev/null; then
+            echo "::error::Monitor state contains invalid JSON."
+            exit 1
           fi
 
-          echo "Initial monitor state:"
-          cat output/monitor_state.json
+          echo "Monitor state validated."
 
+      # 7. Validate Google Sheets configuration
       - name: Diagnose Google Sheets configuration
         env:
           SHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
           SHEET_NAME: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor' }}
           CREDENTIALS_PATH: credentials/google_service_account.json
         run: |
-          if [ -n "$SHEET_ID" ]; then
-            echo "Spreadsheet ID: configured"
-          else
-            echo "::error::GOOGLE_SHEETS_SPREADSHEET_ID is missing"
+          if [ -z "$SHEET_ID" ]; then
+            echo "::error::Missing GOOGLE_SHEETS_SPREADSHEET_ID secret"
             exit 1
           fi
 
+          if [ ! -s "$CREDENTIALS_PATH" ]; then
+            echo "::error::Google Sheets credentials file is missing"
+            exit 1
+          fi
+
+          echo "Google Sheets spreadsheet ID is configured."
           echo "Worksheet: $SHEET_NAME"
+          echo "Credentials file is present."
 
-          if [ -s "$CREDENTIALS_PATH" ]; then
-            echo "Credentials file: present"
-          else
-            echo "::error::Credentials file missing"
-            exit 1
-          fi
->>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
-
-      # 6. Run the monitor
+      # 8. Run the Pharma RFP Monitor
       - name: Run Pharma RFP Monitor
         env:
           GOOGLE_SHEETS_SPREADSHEET_ID: ${{ secrets.GOOGLE_SHEETS_SPREADSHEET_ID }}
-          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor'}}
+          GOOGLE_SHEETS_WORKSHEET: ${{ vars.GOOGLE_SHEETS_WORKSHEET || 'Pharma RFP Monitor' }}
           GOOGLE_SERVICE_ACCOUNT_JSON: credentials/google_service_account.json
 
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-        run: |
-<<<<<<< HEAD
-          python main.py
 
-      # 7. Verify the state file after the run
-      - name: Verify monitor outputs
-        if: always()
-=======
+          PYTHONUNBUFFERED: "1"
+        run: |
           python diagnostic_main.py
 
-      # 7. Verify the state file after the run
+      # 9. Verify generated outputs
       - name: Verify monitor outputs
-        if: success()
->>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
+        if: always()
         run: |
           echo "Output directory:"
           ls -la output || true
 
-<<<<<<< HEAD
-          if [ -f output/monitor_state.json ]; then
+          if [ -s output/monitor_state.json ]; then
             python -m json.tool output/monitor_state.json > /dev/null
-            echo "Monitor state file exists and contains valid JSON."
+            echo "Monitor state is valid JSON."
           else
-            echo "::error::main.py did not leave output/monitor_state.json in place."
+            echo "::error::Monitor state file is missing or empty."
             exit 1
           fi
 
-      # 8. Persist state and reports in GitHub
-=======
-          if [ ! -s output/monitor_state.json ]; then
-            echo "::error::main.py did not create a non-empty monitor_state.json"
-            exit 1
+          if [ -f output/rfp_grant_matches.csv ]; then
+            echo "Current matches report exists."
           fi
 
-          python -m json.tool output/monitor_state.json > /dev/null
+          if [ -f output/last_run_report.csv ]; then
+            echo "Run report exists."
+          fi
 
-          echo "Monitor state is valid JSON."
-
-
-      # 8. Persist state and reports in GitHub  
->>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
+      # 10. Persist state and reports in GitHub
       - name: Save monitor state and results
         if: success()
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add -f output/monitor_state.json
 
@@ -200,36 +178,37 @@ jobs:
             if [ -f "$file" ]; then
               git add -f "$file"
             else
-<<<<<<< HEAD
               echo "Optional output not found: $file"
-=======
-              echo "Not generated; skipping: $file"
->>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
             fi
           done
 
-          if ! git diff --cached --quiet; then
-            git commit -m "Update daily Pharma RFP Monitor results"
-            git push origin HEAD
-          else
-<<<<<<< HEAD
+          if git diff --cached --quiet; then
             echo "No state or report changes to commit."
+            exit 0
           fi
 
-=======
-            echo "No changes to save."
+          git commit -m "Update daily Pharma RFP Monitor results"
+
+          # Integrate newer remote commits before pushing.
+          git fetch origin main
+
+          if ! git rebase -X theirs origin/main; then
+            echo "::error::Rebase failed. Resolve conflicts before retrying."
+            git rebase --abort || true
+            exit 1
           fi
 
+          git push origin HEAD:main
 
->>>>>>> 3460df9c8136a0b0b3abfab3d62f34f207ea3f36
-      # 9. Upload logs even if the monitor fails
-      - name: Upload run logs
+      # 11. Upload logs and reports even when earlier steps fail
+      - name: Upload run logs and reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pharma-rfp-monitor-logs
           path: |
-            logs/monitor.log
+            logs/
             output/last_run_report.csv
+            output/rfp_grant_matches.csv
           if-no-files-found: ignore
           retention-days: 14
