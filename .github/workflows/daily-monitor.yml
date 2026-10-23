@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      # 1. Check out the repository
+      # 1. Check out repository
       - name: Check out repository
         uses: actions/checkout@v4
         with:
@@ -33,13 +33,13 @@ jobs:
         with:
           python-version: "3.12"
 
-      # 3. Install Python dependencies
+      # 3. Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      # 4. Install the browser required by Playwright
+      # 4. Install Playwright browser and system dependencies
       - name: Install Playwright Chromium
         run: python -m playwright install --with-deps chromium
 
@@ -85,7 +85,7 @@ jobs:
           mkdir -p output logs
 
           if [ ! -f output/monitor_state.json ]; then
-            echo "::warning::Monitor state file not found. Initializing new state."
+            echo "::warning::Monitor state not found; initializing new state."
             printf '{}\n' > output/monitor_state.json
           fi
 
@@ -94,11 +94,7 @@ jobs:
             exit 1
           fi
 
-          if ! python -m json.tool output/monitor_state.json > /dev/null; then
-            echo "::error::Monitor state contains invalid JSON."
-            exit 1
-          fi
-
+          python -m json.tool output/monitor_state.json > /dev/null
           echo "Monitor state validated."
 
       # 7. Validate Google Sheets configuration
@@ -135,8 +131,7 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
           PYTHONUNBUFFERED: "1"
-        run: |
-          python diagnostic_main.py
+        run: python diagnostic_main.py
 
       # 9. Verify generated outputs
       - name: Verify monitor outputs
@@ -149,26 +144,27 @@ jobs:
             python -m json.tool output/monitor_state.json > /dev/null
             echo "Monitor state is valid JSON."
           else
-            echo "::error::Monitor state file is missing or empty."
+            echo "::error::Monitor state is missing or empty."
             exit 1
           fi
 
-          if [ -f output/rfp_grant_matches.csv ]; then
-            echo "Current matches report exists."
-          fi
+          test ! -f output/rfp_grant_matches.csv || \
+            echo "Matches report exists."
 
-          if [ -f output/last_run_report.csv ]; then
+          test ! -f output/last_run_report.csv || \
             echo "Run report exists."
-          fi
 
-      # 10. Persist state and reports in GitHub
+      # 10. Save outputs and synchronize with latest main
       - name: Save monitor state and results
         if: success()
         run: |
+          set -e
+
           git config user.name "github-actions[bot]"
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
+          # Stage only generated output files.
           git add -f output/monitor_state.json
 
           for file in \
@@ -182,6 +178,52 @@ jobs:
             fi
           done
 
+          # Save the exact generated output snapshot.
+          mkdir -p /tmp/rfp-monitor-output
+
+          cp output/monitor_state.json \
+            /tmp/rfp-monitor-output/monitor_state.json
+
+          if [ -f output/rfp_grant_matches.csv ]; then
+            cp output/rfp_grant_matches.csv \
+              /tmp/rfp-monitor-output/rfp_grant_matches.csv
+          fi
+
+          if [ -f output/last_run_report.csv ]; then
+            cp output/last_run_report.csv \
+              /tmp/rfp-monitor-output/last_run_report.csv
+          fi
+
+          # Fetch the latest remote main before committing.
+          git fetch origin main
+          git reset --hard origin/main
+
+          # Restore this run's output on top of the latest main.
+          mkdir -p output
+
+          cp /tmp/rfp-monitor-output/monitor_state.json \
+            output/monitor_state.json
+
+          for file in \
+            rfp_grant_matches.csv \
+            last_run_report.csv
+          do
+            if [ -f "/tmp/rfp-monitor-output/$file" ]; then
+              cp "/tmp/rfp-monitor-output/$file" "output/$file"
+            fi
+          done
+
+          git add -f output/monitor_state.json
+
+          for file in \
+            output/rfp_grant_matches.csv \
+            output/last_run_report.csv
+          do
+            if [ -f "$file" ]; then
+              git add -f "$file"
+            fi
+          done
+
           if git diff --cached --quiet; then
             echo "No state or report changes to commit."
             exit 0
@@ -189,16 +231,59 @@ jobs:
 
           git commit -m "Update daily Pharma RFP Monitor results"
 
-          # Integrate newer remote commits before pushing.
-          git fetch origin main
+          # Push. Retry once if main changes concurrently.
+          if ! git push origin HEAD:main; then
+            echo "Push rejected; fetching latest main and retrying."
 
-          if ! git rebase -X theirs origin/main; then
-            echo "::error::Rebase failed. Resolve conflicts before retrying."
-            git rebase --abort || true
-            exit 1
+            git fetch origin main
+
+            # Preserve this run's output files during the retry.
+            cp output/monitor_state.json \
+              /tmp/rfp-monitor-output/monitor_state.json
+
+            if [ -f output/rfp_grant_matches.csv ]; then
+              cp output/rfp_grant_matches.csv \
+                /tmp/rfp-monitor-output/rfp_grant_matches.csv
+            fi
+
+            if [ -f output/last_run_report.csv ]; then
+              cp output/last_run_report.csv \
+                /tmp/rfp-monitor-output/last_run_report.csv
+            fi
+
+            git reset --hard origin/main
+
+            mkdir -p output
+
+            cp /tmp/rfp-monitor-output/monitor_state.json \
+              output/monitor_state.json
+
+            for file in \
+              rfp_grant_matches.csv \
+              last_run_report.csv
+            do
+              if [ -f "/tmp/rfp-monitor-output/$file" ]; then
+                cp "/tmp/rfp-monitor-output/$file" "output/$file"
+              fi
+            done
+
+            git add -f output/monitor_state.json
+
+            for file in \
+              output/rfp_grant_matches.csv \
+              output/last_run_report.csv
+            do
+              if [ -f "$file" ]; then
+                git add -f "$file"
+              fi
+            done
+
+            if ! git diff --cached --quiet; then
+              git commit -m "Update daily Pharma RFP Monitor results"
+            fi
+
+            git push origin HEAD:main
           fi
-
-          git push origin HEAD:main
 
       # 11. Upload logs and reports even when earlier steps fail
       - name: Upload run logs and reports
