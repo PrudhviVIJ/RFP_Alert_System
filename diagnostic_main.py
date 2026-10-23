@@ -21,6 +21,7 @@ from openpyxl import load_workbook
 from io import BytesIO
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+from main import build_email_alert_rows, send_email_alert, sync_email_alerts_to_google_sheet
 
 try:
     from playwright.sync_api import sync_playwright
@@ -312,15 +313,6 @@ def email_evidence_snippets(evidence_items):
                 snippets.append(clean[:500])
     return snippets
 
-EMAIL_ALERT_COLUMNS = [
-    "Pharma Company Name", "RFP URL", "Evidence Text", "Keywords", "Title of the RFP", "Specialty",
-]
-
-def build_email_alert_rows(alerts):
-    """Use the standard alert builder so diagnostic emails include specialty too."""
-    from main import build_email_alert_rows as build_standard_alert_rows
-    return build_standard_alert_rows(alerts)
-
 def get_state():
     if STATE_FILE.exists():
         try:
@@ -406,16 +398,6 @@ def sync_google_sheet(csv_path):
         spreadsheet.title, worksheet_name, max(0, len(values) - 1),
     )
     return True
-
-def sync_email_alerts_to_google_sheet(alerts):
-    # Keep diagnostic runs on the exact same split-tab sync implementation as main.py.
-    from main import sync_email_alerts_to_google_sheet as sync_email_alert_tabs
-    return sync_email_alert_tabs(alerts)
-
-def send_email_alert(alerts):
-    # Keep diagnostic runs' alert email format and spreadsheet link aligned with main.py.
-    from main import send_email_alert as send_standard_alert
-    return send_standard_alert(alerts)
 
 def main():
     parser = argparse.ArgumentParser(description="Monitor pharma company URLs for grant/RFP-related content.")

@@ -317,9 +317,26 @@ EMAIL_ALERT_COLUMNS = [
 ]
 
 def build_email_alert_rows(alerts):
-    """Use the standard alert builder so diagnostic emails include specialty too."""
-    from main import build_email_alert_rows as build_standard_alert_rows
-    return build_standard_alert_rows(alerts)
+    """Build the alert records shown in emails and the alert spreadsheet tabs."""
+    rows = []
+    ordered_alerts = sorted(
+        alerts,
+        key=lambda alert: (0 if alert["opportunity_type"] == "RFP" else 1, alert["company"].casefold()),
+    )
+    for alert in ordered_alerts:
+        evidence = email_evidence_snippets(alert.get("new_evidence", []))
+        if not evidence:
+            continue
+        keywords = list(dict.fromkeys(category for item in evidence for category in email_categories(item)))
+        rows.append([
+            alert["company"],
+            alert["final_url"],
+            "; ".join(evidence),
+            "; ".join(keywords),
+            alert["opportunity_title"],
+            "; ".join(dict.fromkeys(alert.get("topic_terms", []))) or "Not identified",
+        ])
+    return rows
 
 def get_state():
     if STATE_FILE.exists():
@@ -408,14 +425,222 @@ def sync_google_sheet(csv_path):
     return True
 
 def sync_email_alerts_to_google_sheet(alerts):
-    # Keep diagnostic runs on the exact same split-tab sync implementation as main.py.
-    from main import sync_email_alerts_to_google_sheet as sync_email_alert_tabs
-    return sync_email_alert_tabs(alerts)
+    """Replace the current-alert tab and maintain a separate 30-day history tab."""
+    current_rows = build_email_alert_rows(alerts)
+    sent_at = datetime.now(UTC).isoformat(timespec="seconds")
+    history_headers = EMAIL_ALERT_COLUMNS + ["Alert Sent At (UTC)"]
+    old_email_headers = EMAIL_ALERT_COLUMNS[:-1]
+    old_url_email_headers = ["Pharma Company Name", "URL", "Evidence Text", "Keywords", "Title of the RFP"]
+    old_history_headers = [old_email_headers + ["Alert Sent At (IST)"], old_url_email_headers + ["Alert Sent At (IST)"],
+                           old_email_headers + ["Alert Sent At (UTC)"], old_url_email_headers + ["Alert Sent At (UTC)"]]
+    new_history_rows = [row + [sent_at] for row in current_rows]
+
+    spreadsheet_id = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "").strip()
+    credentials_setting = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON", "").strip()
+    current_name = os.getenv("GOOGLE_SHEETS_EMAIL_WORKSHEET", "Email Alerts").strip() or "Email Alerts"
+    history_name = os.getenv("GOOGLE_SHEETS_EMAIL_HISTORY_WORKSHEET", "Email Alerts History").strip() or "Email Alerts History"
+    if not (spreadsheet_id and credentials_setting):
+        logging.info("Google Sheets email-alert sync is not configured; skipping.")
+        return False
+    if current_name == history_name:
+        raise ValueError("Current email alerts and email history must use different worksheet names.")
+    spreadsheet_match = re.search(r"/spreadsheets/d/([A-Za-z0-9_-]+)", spreadsheet_id)
+    spreadsheet_key = spreadsheet_match.group(1) if spreadsheet_match else spreadsheet_id
+
+    try:
+        import gspread
+        from google.oauth2.service_account import Credentials
+    except ImportError as exc:
+        raise RuntimeError("Google Sheets sync requires gspread and google-auth; install requirements.txt.") from exc
+
+    credentials_path = Path(credentials_setting)
+    if not credentials_path.is_absolute():
+        credentials_path = ROOT / credentials_path
+    credentials = Credentials.from_service_account_file(
+        str(credentials_path), scopes=["https://www.googleapis.com/auth/spreadsheets"],
+    )
+    spreadsheet = gspread.authorize(credentials).open_by_key(spreadsheet_key)
+
+    def get_or_create_tab(name, columns):
+        try:
+            return spreadsheet.worksheet(name)
+        except gspread.WorksheetNotFound:
+            tab = spreadsheet.add_worksheet(title=name, rows="1000", cols=str(columns))
+            logging.info("Created Google Sheets worksheet '%s'.", name)
+            return tab
+
+    current_tab = get_or_create_tab(current_name, len(EMAIL_ALERT_COLUMNS))
+    history_tab = get_or_create_tab(history_name, len(history_headers))
+    current_values = current_tab.get_all_values()
+    history_values = history_tab.get_all_values()
+
+    def records_for_tab(values, name):
+        values = [row for row in values if any(str(cell).strip() for cell in row)]
+        if not values:
+            return [], []
+        if values[0] == history_headers:
+            rows = [row[:len(history_headers)] + [""] * max(0, len(history_headers) - len(row)) for row in values[1:]]
+            return [normalize_history_timestamp(row) for row in rows], []
+        if values[0] in old_history_headers:
+            rows = []
+            for old_row in values[1:]:
+                old_row = old_row + [""] * max(0, 6 - len(old_row))
+                row = old_row[:5] + ["Not identified"] + [old_row[5]]
+                rows.append(normalize_history_timestamp(row))
+            return rows, []
+        if values[0] == EMAIL_ALERT_COLUMNS:
+            return [], [row[:len(EMAIL_ALERT_COLUMNS)] + [""] * max(0, len(EMAIL_ALERT_COLUMNS) - len(row)) for row in values[1:]]
+        if values[0] in (old_email_headers, old_url_email_headers):
+            return [], [row[:5] + ["Not identified"] for row in values[1:]]
+        raise RuntimeError(f"Worksheet '{name}' has unexpected headers; leaving it unchanged.")
+
+    def normalize_history_timestamp(row):
+        """Convert stored timestamp instants to a consistent UTC ISO string."""
+        try:
+            timestamp = datetime.fromisoformat(row[-1])
+            if timestamp.tzinfo is None:
+                timestamp = timestamp.replace(tzinfo=UTC)
+            row[-1] = timestamp.astimezone(UTC).isoformat(timespec="seconds")
+        except ValueError:
+            pass  # The retention pass below will discard malformed timestamps.
+        return row
+
+    history_rows, legacy_history_rows = records_for_tab(history_values, history_name)
+    current_history_rows, legacy_current_rows = records_for_tab(current_values, current_name)
+    known_timestamped_payloads = {
+        tuple(row[:len(EMAIL_ALERT_COLUMNS)]) for row in history_rows + current_history_rows
+    }
+    legacy_rows = legacy_history_rows + [
+        row for row in legacy_current_rows
+        if tuple(row) not in known_timestamped_payloads
+    ]
+
+    # Preserve pre-timestamp data in a clearly labelled archive before migrating tabs.
+    if legacy_rows:
+        archive_headers = EMAIL_ALERT_COLUMNS + ["Timestamp Status"]
+        archive = None
+        archive_values = []
+        for suffix in range(1, 100):
+            archive_name = "Email Alerts Legacy Archive" if suffix == 1 else f"Email Alerts Legacy Archive {suffix}"
+            try:
+                candidate = spreadsheet.worksheet(archive_name)
+                candidate_values = candidate.get_all_values()
+            except gspread.WorksheetNotFound:
+                candidate = spreadsheet.add_worksheet(title=archive_name, rows="1000", cols=str(len(archive_headers)))
+                candidate_values = []
+            if not candidate_values or candidate_values[0] == archive_headers:
+                archive, archive_values = candidate, candidate_values
+                break
+            logging.warning("Leaving archive worksheet '%s' unchanged because its headers differ.", archive_name)
+        if archive is None:
+            raise RuntimeError("Could not find or create a compatible legacy email-alert archive worksheet.")
+        if not archive_values:
+            archive.update(range_name="A1", values=[archive_headers], value_input_option="RAW")
+            archive.format("A1:G1", {"textFormat": {"bold": True}})
+            archive_values = [archive_headers]
+        known_legacy = {tuple(row[:len(EMAIL_ALERT_COLUMNS)]) for row in archive_values[1:]}
+        archive_rows = [
+            row + ["Timestamp unavailable (pre-change)"]
+            for row in legacy_rows
+            if tuple(row) not in known_legacy
+        ]
+        if archive_rows:
+            archive.append_rows(archive_rows, value_input_option="RAW")
+        logging.info("Archived %d pre-timestamp alert row(s).", len(archive_rows))
+
+    # Existing current-tab history is migrated to the history tab. Identical
+    # rows are deduplicated because it may already have been copied on a prior run.
+    candidates = history_rows + current_history_rows + new_history_rows
+    cutoff = datetime.now(UTC) - timedelta(days=30)
+    retained_rows, expired_rows, seen = [], 0, set()
+    for row in candidates:
+        key = tuple(row)
+        if key in seen:
+            continue
+        seen.add(key)
+        try:
+            timestamp = datetime.fromisoformat(row[-1])
+            if timestamp.tzinfo is None:
+                timestamp = timestamp.replace(tzinfo=UTC)
+        except ValueError:
+            expired_rows += 1
+            continue
+        if timestamp.astimezone(UTC) >= cutoff:
+            retained_rows.append(row)
+        else:
+            expired_rows += 1
+
+    updated_history = [history_headers] + retained_rows
+    history_tab.clear()
+    history_tab.update(range_name="A1", values=updated_history, value_input_option="RAW")
+    history_tab.format("A1:G1", {"textFormat": {"bold": True}})
+    history_tab.freeze(rows=1)
+    if history_tab.get_all_values() != updated_history:
+        raise RuntimeError(f"Google Sheets read-back did not match '{history_name}'.")
+
+    # This tab represents only emails successfully sent in the current scrape.
+    updated_current = [EMAIL_ALERT_COLUMNS] + (current_rows if alerts else [])
+    current_tab.clear()
+    current_tab.update(range_name="A1", values=updated_current, value_input_option="RAW")
+    current_tab.format("A1:F1", {"textFormat": {"bold": True}})
+    current_tab.freeze(rows=1)
+    if current_tab.get_all_values() != updated_current:
+        raise RuntimeError(f"Google Sheets read-back did not match current alerts in '{current_name}'.")
+
+    logging.info(
+        "Google Sheets email tabs updated: current='%s' (%d alert(s)); history='%s' (%d retained, %d expired); window=30 days.",
+        current_name, len(current_rows) if alerts else 0, history_name, len(retained_rows), expired_rows,
+    )
+    return True
 
 def send_email_alert(alerts):
-    # Keep diagnostic runs' alert email format and spreadsheet link aligned with main.py.
-    from main import send_email_alert as send_standard_alert
-    return send_standard_alert(alerts)
+    host = os.getenv("SMTP_HOST", "").strip()
+    recipients = [r.strip() for r in re.split(r"[,;]", os.getenv("ALERT_TO", "")) if r.strip()]
+    sender = os.getenv("ALERT_FROM", "").strip()
+    if not (host and recipients and sender):
+        logging.info("Email not configured; alerts will be written to CSV/log only.")
+        return False
+    port = int(os.getenv("SMTP_PORT", "587"))
+    username = os.getenv("SMTP_USERNAME", "")
+    password = os.getenv("SMTP_PASSWORD", "")
+    use_tls = os.getenv("SMTP_USE_TLS", "true").lower() in {"1", "true", "yes"}
+
+    msg = EmailMessage()
+    msg["Subject"] = "Pharma RFP Monitor Alert"
+    msg["From"] = sender
+    msg["To"] = ", ".join(recipients)
+    text_blocks, html_blocks = [], []
+    for row in build_email_alert_rows(alerts):
+        fields = list(zip(EMAIL_ALERT_COLUMNS, row))
+        text_blocks.append("\n".join(f"{label}: {value}" for label, value in fields))
+        html_blocks.append("<section>" + "<br>".join(
+            f"<strong>{html.escape(label)}:</strong> {html.escape(value)}" for label, value in fields
+        ) + "</section>")
+    if not html_blocks:
+        logging.info("No RFP, CGA, or IME evidence remains after email filtering.")
+        return False
+    spreadsheet_setting = os.getenv("GOOGLE_SHEETS_SPREADSHEET_ID", "").strip()
+    spreadsheet_match = re.search(r"/spreadsheets/d/([A-Za-z0-9_-]+)", spreadsheet_setting)
+    spreadsheet_id = spreadsheet_match.group(1) if spreadsheet_match else spreadsheet_setting
+    spreadsheet_url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/edit" if spreadsheet_id else ""
+    text_body = "\n\n".join(text_blocks)
+    html_body = "<hr>".join(html_blocks)
+    if spreadsheet_url:
+        text_body += f"\n\nGoogle Spreadsheet: {spreadsheet_url}"
+        html_body += (
+            "<hr><p><strong>Google Spreadsheet:</strong> "
+            f'<a href="{html.escape(spreadsheet_url, quote=True)}">Open spreadsheet</a></p>'
+        )
+    msg.set_content(text_body)
+    msg.add_alternative("<html><body>" + html_body + "</body></html>", subtype="html")
+    with smtplib.SMTP(host, port, timeout=25) as server:
+        if use_tls:
+            server.starttls()
+        if username:
+            server.login(username, password)
+        server.send_message(msg, to_addrs=recipients)
+    logging.info("Email alert sent to %s recipient(s)", len(recipients))
+    return True
 
 def main():
     parser = argparse.ArgumentParser(description="Monitor pharma company URLs for grant/RFP-related content.")
