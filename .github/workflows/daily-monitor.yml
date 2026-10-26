@@ -156,11 +156,10 @@ jobs:
             echo "Run report exists."
           fi
 
-      # 10. Save outputs and synchronize with latest main
+      
+      # 10. Save outputs and synchronize safely with latest main
       - name: Save monitor state and results
         if: success()
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
@@ -174,55 +173,24 @@ jobs:
 
           cp output/monitor_state.json "$SNAPSHOT/monitor_state.json"
 
-          if [ -f output/rfp_grant_matches.csv ]; then
-            cp output/rfp_grant_matches.csv "$SNAPSHOT/rfp_grant_matches.csv"
-          fi
-
-          if [ -f output/last_run_report.csv ]; then
-            cp output/last_run_report.csv "$SNAPSHOT/last_run_report.csv"
-          fi
-
-          # Get the latest main branch before committing.
-          git fetch origin main
-          git reset --hard origin/main
-
-          # Restore the generated output files.
-          mkdir -p output
-
-          cp "$SNAPSHOT/monitor_state.json" output/monitor_state.json
-
           for file in rfp_grant_matches.csv last_run_report.csv; do
-            if [ -f "$SNAPSHOT/$file" ]; then
-              cp "$SNAPSHOT/$file" "output/$file"
+            if [ -f "output/$file" ]; then
+              cp "output/$file" "$SNAPSHOT/$file"
             fi
           done
 
-          # Stage only generated files.
-          git add -f output/monitor_state.json
+          # Retry if another commit updates main during our push.
+          MAX_ATTEMPTS=3
 
-          for file in \
-            output/rfp_grant_matches.csv \
-            output/last_run_report.csv
-          do
-            if [ -f "$file" ]; then
-              git add -f "$file"
-            fi
-          done
+          for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
+            echo "Save attempt $attempt of $MAX_ATTEMPTS"
 
-          if git diff --cached --quiet; then
-            echo "No state or report changes to commit."
-            exit 0
-          fi
-
-          git commit -m "Update daily Pharma RFP Monitor results"
-
-          # Retry once if another commit reaches main before the push.
-          if ! git push origin HEAD:main; then
-            echo "Push rejected. Refreshing main and retrying."
-
+            # Start from the latest remote main.
             git fetch origin main
             git reset --hard origin/main
 
+            # Restore this run's generated files.
+            mkdir -p output
             cp "$SNAPSHOT/monitor_state.json" output/monitor_state.json
 
             for file in rfp_grant_matches.csv last_run_report.csv; do
@@ -231,6 +199,7 @@ jobs:
               fi
             done
 
+            # Stage only the intended generated files.
             git add -f output/monitor_state.json
 
             for file in \
@@ -242,12 +211,31 @@ jobs:
               fi
             done
 
-            if ! git diff --cached --quiet; then
-              git commit -m "Update daily Pharma RFP Monitor results"
+            # Avoid creating empty commits.
+            if git diff --cached --quiet; then
+              echo "No changes to save."
+              exit 0
             fi
 
-            git push origin HEAD:main
-          fi
+            git commit -m "Update daily Pharma RFP Monitor results"
+
+            # A successful push finishes the step.
+            if git push origin HEAD:main; then
+              echo "Monitor state and results pushed successfully."
+              exit 0
+            fi
+
+            echo "::warning::Push attempt $attempt failed."
+
+            if [ "$attempt" -lt "$MAX_ATTEMPTS" ]; then
+              echo "Will fetch the latest main and retry."
+              sleep 2
+            fi
+          done
+
+          echo "::error::Could not push monitor results after $MAX_ATTEMPTS attempts."
+          exit 1
+
 
       # 11. Upload logs and reports, even if an earlier step fails
       - name: Upload run logs and reports
